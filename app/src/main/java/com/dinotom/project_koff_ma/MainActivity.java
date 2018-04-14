@@ -2,10 +2,12 @@ package com.dinotom.project_koff_ma;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dinotom.project_koff_ma.pojo.UserToken;
+import com.dinotom.project_koff_ma.pojo.category.Category;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -21,27 +23,49 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TextView mainText = findViewById(R.id.mainText);
         apiInterface = APIClient.getClient().create(APIInterface.class);
 
-        Call<UserToken> call1 = apiInterface.getUserToken("superuser", "nevionevio");
+        Call<UserToken> userTokenCall = apiInterface.getUserToken("superuser", "superuser");
 
-        call1.enqueue(new Callback<UserToken>()
+        userTokenCall.enqueue(new Callback<UserToken>()
         {
             @Override
             public void onResponse(Call<UserToken> call, Response<UserToken> response)
             {
-                UserToken token1 = response.body();
-                Toast.makeText(getApplicationContext(), token1.getToken(), Toast.LENGTH_LONG).show();
-                //mainText.setText(token1.getToken());
+                UserToken token = response.body();
+                createCategoryGridView(token.getToken());
+                //Toast.makeText(getApplicationContext(), token.getToken(), Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onFailure(Call<UserToken> call, Throwable t)
             {
                 call.cancel();
-                Toast.makeText(getApplicationContext(), "Nije uspjesno!", Toast.LENGTH_LONG).show();
-                //mainText.setText("Nije uspjelo!");
+                Toast.makeText(getApplicationContext(), "Nije uspjesno dohvacanje usera!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
+
+    private void createCategoryGridView(final String token)
+    {
+        Call<Category> categoryCall = apiInterface.getMainCategories("Token " + token);
+
+        categoryCall.enqueue(new Callback<Category>()
+        {
+            @Override
+            public void onResponse(Call<Category> call, Response<Category> response)
+            {
+                Category mainCategories = response.body(); //dobiven Category POJO
+                Toast.makeText(getApplicationContext(), mainCategories.results.get(0).name, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<Category> call, Throwable t)
+            {
+                call.cancel();
+                Toast.makeText(getApplicationContext(), "Nije uspjesno dohvacanje kategorija!", Toast.LENGTH_SHORT).show();
             }
         });
     }
