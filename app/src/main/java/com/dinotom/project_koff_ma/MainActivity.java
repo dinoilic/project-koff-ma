@@ -1,5 +1,6 @@
 package com.dinotom.project_koff_ma;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity
     {
         super.onStart();
 
-        String currentUserToken = UserUtilities.getCurrentUserToken(getApplicationContext());
+        String currentUserToken = UserUtilities.getCurrentUserToken();
         if(currentUserToken == null || currentUserToken.isEmpty()) // token is not stored in SharedPreferences
         {
             apiInterface = APIClient.getClient().create(APIInterface.class);
@@ -37,10 +38,10 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onResponse(Call<UserToken> call, Response<UserToken> response) {
                     UserToken token = response.body();
-                    UserUtilities.setNewUserToken(getApplicationContext(), token.getToken());
-                    //createCategoryGridView(token.getToken());
+                    UserUtilities.setNewUserToken(token.getToken());
+                    Toast.makeText(getApplicationContext(), UserUtilities.getCurrentUserToken(), Toast.LENGTH_SHORT).show();
+                    createCategoryGridView();
                 }
-
                 @Override
                 public void onFailure(Call<UserToken> call, Throwable t) {
                     call.cancel();
@@ -51,19 +52,19 @@ public class MainActivity extends AppCompatActivity
         else // token is stored in SharedPreferences
         {
             Toast.makeText(getApplicationContext(), "Token is stored: " + currentUserToken, Toast.LENGTH_SHORT).show();
+            //createCategoryGridView();
         }
     }
 
-    private void createCategoryGridView(final String token)
+    private void createCategoryGridView()
     {
-        Call<Category> categoryCall = apiInterface.getMainCategories("Token " + token);
-
+        Call<Category> categoryCall = apiInterface.getMainCategories();
         categoryCall.enqueue(new Callback<Category>()
         {
             @Override
             public void onResponse(Call<Category> call, Response<Category> response)
             {
-                Category mainCategories = response.body(); //dobiven Category POJO
+                Category mainCategories = response.body(); // Category pojo is fetched
                 Toast.makeText(getApplicationContext(), mainCategories.results.get(0).name, Toast.LENGTH_LONG).show();
             }
 
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity
             public void onFailure(Call<Category> call, Throwable t)
             {
                 call.cancel();
-                Toast.makeText(getApplicationContext(), "Nije uspjesno dohvacanje kategorija!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Category fetching unsuccessful!", Toast.LENGTH_SHORT).show();
             }
         });
     }

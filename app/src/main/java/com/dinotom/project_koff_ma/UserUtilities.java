@@ -5,8 +5,9 @@ import android.content.SharedPreferences;
 
 public class UserUtilities
 {
-    static String getCurrentUserToken(Context context)
+    static String getCurrentUserToken()
     {
+        Context context = KoffGlobal.getAppContext();
         String preferenceFileName = context.getResources().getString(R.string.user_accounts_file); // name of preference file
         String userTokenKey = context.getResources().getString(R.string.user_token_key); // key value where token is stored
         SharedPreferences sharedPref = context.getSharedPreferences(preferenceFileName, Context.MODE_PRIVATE);
@@ -15,8 +16,9 @@ public class UserUtilities
         return token;
     }
 
-    static void setNewUserToken(Context context, String newToken)
+    static void setNewUserToken(String newToken)
     {
+        Context context = KoffGlobal.getAppContext();
         String preferenceFileName = context.getResources().getString(R.string.user_accounts_file); // name of preference file
         String userTokenKey = context.getResources().getString(R.string.user_token_key); // key value where token is stored
         SharedPreferences sharedPref = context.getSharedPreferences(preferenceFileName, Context.MODE_PRIVATE);

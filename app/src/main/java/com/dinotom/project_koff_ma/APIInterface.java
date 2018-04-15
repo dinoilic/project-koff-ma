@@ -19,5 +19,5 @@ public interface APIInterface
     Call<UserToken> getUserToken(@Field("username") String username, @Field("password") String password);
 
     @GET("api/v1/categories/")
-    Call<Category> getMainCategories(@Header("Authorization") String token);
+    Call<Category> getMainCategories();
 }
