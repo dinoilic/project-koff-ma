@@ -27,8 +27,10 @@ class APIClient
             }
         });
 
+        String apiURL = KoffGlobal.getAppContext().getResources().getString(R.string.rest_api_url);
+
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.8:8000")
+                .baseUrl(apiURL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
