@@ -1,13 +1,11 @@
 package com.dinotom.project_koff_ma;
 
-import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.dinotom.project_koff_ma.pojo.UserToken;
 import com.dinotom.project_koff_ma.pojo.category.Category;
-import com.dinotom.project_koff_ma.UserUtilities;
+import com.squareup.otto.Subscribe;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,30 +27,22 @@ public class MainActivity extends AppCompatActivity
     {
         super.onStart();
 
-        String currentUserToken = UserUtilities.getCurrentUserToken();
-        if(currentUserToken == null || currentUserToken.isEmpty()) // token is not stored in SharedPreferences
+        apiInterface = APIClient.getClient().create(APIInterface.class); // initialize default REST interface, with default authorization headers
+        KoffGlobal.bus.register(this); // register Otto bus for event observing
+
+        String currentUserToken = UserUtilities.getCurrentUserToken(); // get current User Auth Token from shared preferences
+        if(currentUserToken == null || currentUserToken.isEmpty())
+            UserUtilities.fetchNewToken();
+        else
+            UserUtilities.checkTokenValidity(currentUserToken); // checks validity of the current token; if invalid, fetches new token
+    }
+
+    @Subscribe
+    public void initializeActivity(String event)
+    {
+        if(event.equals(KoffGlobal.getAppContext().getResources().getString(R.string.main_activity_event))) // if the event is intended for this activity
         {
-            apiInterface = APIClient.getClient().create(APIInterface.class);
-            Call<UserToken> userTokenCall = apiInterface.getUserToken("superuser", "superuser"); // add login procedure here
-            userTokenCall.enqueue(new Callback<UserToken>() {
-                @Override
-                public void onResponse(Call<UserToken> call, Response<UserToken> response) {
-                    UserToken token = response.body();
-                    UserUtilities.setNewUserToken(token.getToken());
-                    Toast.makeText(getApplicationContext(), UserUtilities.getCurrentUserToken(), Toast.LENGTH_SHORT).show();
-                    createCategoryGridView();
-                }
-                @Override
-                public void onFailure(Call<UserToken> call, Throwable t) {
-                    call.cancel();
-                    Toast.makeText(getApplicationContext(), "User token fetching unsuccessful!", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-        else // token is stored in SharedPreferences
-        {
-            Toast.makeText(getApplicationContext(), "Token is stored: " + currentUserToken, Toast.LENGTH_SHORT).show();
-            //createCategoryGridView();
+            createCategoryGridView();
         }
     }
 

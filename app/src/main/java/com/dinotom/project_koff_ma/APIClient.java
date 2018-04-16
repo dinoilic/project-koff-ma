@@ -18,6 +18,7 @@ class APIClient
     {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
+        // adds automatic authorization headers for every request
         httpClient.addInterceptor(new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
@@ -30,6 +31,21 @@ class APIClient
                 .baseUrl("http://192.168.1.8:8000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
+                .build();
+
+        return retrofit;
+    }
+
+    static Retrofit getClientWithoutDefaultHeaders()
+    {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.1.8:8000")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
                 .build();
 
         return retrofit;

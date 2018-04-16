@@ -1,9 +1,8 @@
 package com.dinotom.project_koff_ma;
 
+import com.dinotom.project_koff_ma.pojo.TokenValidation;
 import com.dinotom.project_koff_ma.pojo.category.Category;
 import com.dinotom.project_koff_ma.pojo.UserToken;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -20,4 +19,7 @@ public interface APIInterface
 
     @GET("api/v1/categories/")
     Call<Category> getMainCategories();
+
+    @GET("api/v1/token-validation/")
+    Call<TokenValidation> getTokenValidityStatus(@Header("Authorization") String token);
 }
