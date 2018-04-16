@@ -72,7 +72,7 @@ public class UserUtilities
             @Override
             public void onResponse(Call<TokenValidation> call, Response<TokenValidation> response)
             {
-                if(response.code() == 403) {
+                if(response.code() == 403) { // find a better way later
                     Log.d(TAG + "checkTokenValidity", "User auth token is not valid, fetching a new one.");
                     fetchNewToken();
                 }

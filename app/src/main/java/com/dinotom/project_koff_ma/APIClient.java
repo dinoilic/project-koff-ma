@@ -44,8 +44,10 @@ class APIClient
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
+        String apiURL = KoffGlobal.getAppContext().getResources().getString(R.string.rest_api_url);
+
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.8:8000")
+                .baseUrl(apiURL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();
