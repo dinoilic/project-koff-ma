@@ -6,15 +6,35 @@ import com.google.gson.annotations.SerializedName;
 
 public class Result
 {
-
     @SerializedName("pk")
     @Expose
-    public Integer pk;
+    private Integer pk;
+
     @SerializedName("name")
     @Expose
-    public String name;
+    private String name;
+
+    @SerializedName("icon_name")
+    @Expose
+    private String iconName;
+
     @SerializedName("children")
     @Expose
-    public List<Child> children = null;
+    private List<Child> children = null;
 
+    public Integer getPk() {
+        return pk;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getIconName() {
+        return iconName;
+    }
+
+    public List<Child> getChildren() {
+        return children;
+    }
 }

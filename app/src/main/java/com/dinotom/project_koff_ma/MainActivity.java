@@ -2,10 +2,19 @@ package com.dinotom.project_koff_ma;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.Toast;
 
 import com.dinotom.project_koff_ma.pojo.category.Category;
+import com.dinotom.project_koff_ma.pojo.category.Result;
 import com.squareup.otto.Subscribe;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -14,12 +23,19 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity
 {
     APIInterface apiInterface;
+    RecyclerView recyclerView;
+    CategoryAdapter categoryAdapter;
+
+    List<Result> categoryList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        recyclerView = (RecyclerView) findViewById(R.id.rv);
+        recyclerView.setLayoutManager(new GridLayoutManager(KoffGlobal.getAppContext(), 2));
     }
 
     @Override
@@ -55,7 +71,16 @@ public class MainActivity extends AppCompatActivity
             public void onResponse(Call<Category> call, Response<Category> response)
             {
                 Category mainCategories = response.body(); // Category pojo is fetched
-                Toast.makeText(getApplicationContext(), mainCategories.results.get(0).name, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), mainCategories.getResults().get(0).getName(), Toast.LENGTH_LONG).show();
+
+                categoryList = new ArrayList<Result>();
+                for (Result category:
+                     mainCategories.getResults()) {
+                    categoryList.add(category);
+                }
+
+                categoryAdapter = new CategoryAdapter(KoffGlobal.getAppContext(), categoryList);
+                recyclerView.setAdapter(categoryAdapter);
             }
 
             @Override

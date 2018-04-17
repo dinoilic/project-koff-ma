@@ -6,20 +6,37 @@ import com.google.gson.annotations.SerializedName;
 
 public class Category
 {
-
     @SerializedName("count")
     @Expose
-    public Integer count;
+    private Integer count;
+
     @SerializedName("next")
     @Expose
-    public Object next;
+    private Object next;
+
     @SerializedName("previous")
     @Expose
-    public Object previous;
+    private Object previous;
+
     @SerializedName("results")
     @Expose
-    public List<Result> results = null;
+    private List<Result> results = null;
 
+    public Integer getCount() {
+        return count;
+    }
+
+    public Object getNext() {
+        return next;
+    }
+
+    public Object getPrevious() {
+        return previous;
+    }
+
+    public List<Result> getResults() {
+        return results;
+    }
 }
 
 
