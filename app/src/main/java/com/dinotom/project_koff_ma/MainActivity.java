@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         recyclerView = (RecyclerView) findViewById(R.id.rv);
-        recyclerView.setLayoutManager(new GridLayoutManager(KoffGlobal.getAppContext(), 2));
+        recyclerView.setLayoutManager(new GridLayoutManager(KoffGlobal.getAppContext(), 3));
     }
 
     @Override

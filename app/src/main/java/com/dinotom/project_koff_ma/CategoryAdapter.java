@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.dinotom.project_koff_ma.pojo.category.Category;
 import com.dinotom.project_koff_ma.pojo.category.Result;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -38,7 +39,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         Result category = categoryList.get(position);
 
         holder.textViewTitle.setText(category.getName());
-        holder.imageViewCategory.setImageResource(R.drawable.car);
+        Picasso.get().load(category.getImage()).into(holder.imageViewCategory);
 
     }
 
