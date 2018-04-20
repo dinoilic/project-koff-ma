@@ -10,7 +10,7 @@
         android:id="@+id/cv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clickable="true"
+        android:clickable="false"
         android:padding="0dp"
         card_view:cardElevation="0dp"
         card_view:contentPadding="5dp">

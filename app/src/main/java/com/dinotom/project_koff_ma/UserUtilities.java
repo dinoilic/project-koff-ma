@@ -78,7 +78,7 @@ public class UserUtilities
                 }
                 else {
                     Log.d(TAG + "checkTokenValidity", "User auth token is valid!");
-                    // send "notification" to MainActivity so that it can begin with loading it's own content
+                    // send "notification" to MainActivity so that it can begin with loading its own content
                     KoffGlobal.bus.post(KoffGlobal.getAppContext().getResources().getString(R.string.main_activity_event));
                 }
             }

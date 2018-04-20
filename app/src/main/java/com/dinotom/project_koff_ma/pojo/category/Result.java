@@ -1,5 +1,6 @@
 package com.dinotom.project_koff_ma.pojo.category;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -20,7 +21,7 @@ public class Result
 
     @SerializedName("children")
     @Expose
-    private List<Child> children = null;
+    private ArrayList<Child> children = null;
 
     public Integer getPk() {
         return pk;
@@ -34,7 +35,7 @@ public class Result
         return image;
     }
 
-    public List<Child> getChildren() {
+    public ArrayList<Child> getChildren() {
         return children;
     }
 }

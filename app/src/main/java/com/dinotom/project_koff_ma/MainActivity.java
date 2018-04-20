@@ -11,7 +11,9 @@ import android.widget.Toast;
 
 import com.dinotom.project_koff_ma.pojo.category.Category;
 import com.dinotom.project_koff_ma.pojo.category.Result;
+import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
+import com.squareup.otto.ThreadEnforcer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,9 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
 {
+    public static final String MAIN_CATEGORY_NAME = "com.dinotom.project_koff_ma.MAIN_CATEGORY_NAME";
+    public static final String MAIN_CATEGORY_CHILDREN = "com.dinotom.project_koff_ma.MAIN_CATEGORY_CHILDREN";
+
     APIInterface apiInterface;
     RecyclerView recyclerView;
     CategoryAdapter categoryAdapter;
@@ -71,7 +76,6 @@ public class MainActivity extends AppCompatActivity
             public void onResponse(Call<Category> call, Response<Category> response)
             {
                 Category mainCategories = response.body(); // Category pojo is fetched
-                Toast.makeText(getApplicationContext(), mainCategories.getResults().get(0).getName(), Toast.LENGTH_LONG).show();
 
                 categoryList = new ArrayList<Result>();
                 for (Result category:

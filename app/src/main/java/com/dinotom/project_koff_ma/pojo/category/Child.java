@@ -1,10 +1,10 @@
 package com.dinotom.project_koff_ma.pojo.category;
 
-import java.util.List;
+import java.io.Serializable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Child
+public class Child implements Serializable
 {
     @SerializedName("pk")
     @Expose
@@ -18,10 +18,6 @@ public class Child
     @Expose
     private String image;
 
-    @SerializedName("children")
-    @Expose
-    private List<Object> children = null;
-
     public Integer getPk() {
         return pk;
     }
@@ -33,10 +29,4 @@ public class Child
     public String getImage() {
         return image;
     }
-
-    public List<Object> getChildren() {
-        return children;
-    }
-
-
 }
