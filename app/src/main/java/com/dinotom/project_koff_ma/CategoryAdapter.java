@@ -38,7 +38,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         Result category = categoryList.get(position);
 
         holder.textViewTitle.setText(category.getName());
-        holder.imageViewCategory.setImageResource(R.drawable.na);
+        holder.imageViewCategory.setImageResource(R.drawable.car);
 
     }
 
