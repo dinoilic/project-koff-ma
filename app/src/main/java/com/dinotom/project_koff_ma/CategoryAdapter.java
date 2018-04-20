@@ -2,8 +2,10 @@ package com.dinotom.project_koff_ma;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -22,8 +24,6 @@ import static com.dinotom.project_koff_ma.MainActivity.MAIN_CATEGORY_NAME;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>
 {
-
-
     private Context mCtx;
     private List<Result> categoryList;
 
@@ -41,7 +41,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     }
 
     @Override
-    public void onBindViewHolder(CategoryViewHolder holder, final int position) {
+    public void onBindViewHolder(final CategoryViewHolder holder, final int position) {
         final Result category = categoryList.get(position);
 
         holder.textViewTitle.setText(category.getName());
@@ -79,5 +79,4 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             textViewTitle = itemView.findViewById(R.id.category_name);
         }
     }
-
 }

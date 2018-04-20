@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity
 
     List<Result> categoryList;
 
+    boolean ottoRegistered = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -50,12 +52,29 @@ public class MainActivity extends AppCompatActivity
 
         apiInterface = APIClient.getClient().create(APIInterface.class); // initialize default REST interface, with default authorization headers
         KoffGlobal.bus.register(this); // register Otto bus for event observing
+        ottoRegistered = true;
 
         String currentUserToken = UserUtilities.getCurrentUserToken(); // get current User Auth Token from shared preferences
         if(currentUserToken == null || currentUserToken.isEmpty())
             UserUtilities.fetchNewToken();
         else
             UserUtilities.checkTokenValidity(currentUserToken); // checks validity of the current token; if invalid, fetches new token
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if(!ottoRegistered) KoffGlobal.bus.register(this);
+        ottoRegistered = true;
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        if(ottoRegistered) KoffGlobal.bus.unregister(this);
+        ottoRegistered = false;
     }
 
     @Subscribe
