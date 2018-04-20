@@ -14,9 +14,9 @@ public class Result
     @Expose
     private String name;
 
-    @SerializedName("icon_name")
+    @SerializedName("image")
     @Expose
-    private String iconName;
+    private String image;
 
     @SerializedName("children")
     @Expose
@@ -30,8 +30,8 @@ public class Result
         return name;
     }
 
-    public String getIconName() {
-        return iconName;
+    public String getImage() {
+        return image;
     }
 
     public List<Child> getChildren() {

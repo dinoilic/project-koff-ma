@@ -62,3 +62,6 @@ fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
 fastlane/readme.md
+
+# project koff
+app/src/main/res/values/individual_dev_settings.xml
