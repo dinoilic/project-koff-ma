@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerView = (RecyclerView) findViewById(R.id.rv);
+        recyclerView = (RecyclerView) findViewById(R.id.rv_main);
         recyclerView.setLayoutManager(new GridLayoutManager(KoffGlobal.getAppContext(), 3));
     }
 
@@ -101,6 +101,8 @@ public class MainActivity extends AppCompatActivity
                      mainCategories.getResults()) {
                     categoryList.add(category);
                 }
+
+                //categoryList = mainCategories.getResults();
 
                 categoryAdapter = new CategoryAdapter(KoffGlobal.getAppContext(), categoryList);
                 recyclerView.setAdapter(categoryAdapter);
