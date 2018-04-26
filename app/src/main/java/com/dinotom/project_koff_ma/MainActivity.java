@@ -24,6 +24,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
 {
+    public static final String MAIN_CATEGORY_PK = "com.dinotom.project_koff_ma.MAIN_CATEGORY_PK";
     public static final String MAIN_CATEGORY_NAME = "com.dinotom.project_koff_ma.MAIN_CATEGORY_NAME";
     public static final String MAIN_CATEGORY_CHILDREN = "com.dinotom.project_koff_ma.MAIN_CATEGORY_CHILDREN";
 

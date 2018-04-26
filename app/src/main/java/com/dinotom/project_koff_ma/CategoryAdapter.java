@@ -21,6 +21,7 @@ import java.util.List;
 
 import static com.dinotom.project_koff_ma.MainActivity.MAIN_CATEGORY_CHILDREN;
 import static com.dinotom.project_koff_ma.MainActivity.MAIN_CATEGORY_NAME;
+import static com.dinotom.project_koff_ma.MainActivity.MAIN_CATEGORY_PK;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>
 {
@@ -53,6 +54,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             public void onClick(View v)
             {
                 Intent intent = new Intent(mCtx, SubcategoryActivity.class);
+                intent.putExtra(MAIN_CATEGORY_PK, category.getPk());
                 intent.putExtra(MAIN_CATEGORY_NAME, category.getName());
                 intent.putExtra(MAIN_CATEGORY_CHILDREN, category.getChildren());
                 mCtx.startActivity(intent);
