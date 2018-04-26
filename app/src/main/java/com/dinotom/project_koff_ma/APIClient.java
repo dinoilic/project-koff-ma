@@ -10,11 +10,11 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-class APIClient
+public class APIClient
 {
     private static Retrofit retrofit = null;
 
-    static Retrofit getClient()
+    public static Retrofit getClient()
     {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
@@ -38,7 +38,7 @@ class APIClient
         return retrofit;
     }
 
-    static Retrofit getClientWithoutDefaultHeaders()
+    public static Retrofit getClientWithoutDefaultHeaders()
     {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);

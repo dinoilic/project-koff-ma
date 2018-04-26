@@ -25,6 +25,7 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity android:name=".SubcategoryActivity"></activity>
+        <activity android:name=".business_entities.BusinessEntitiesActivity"></activity>
     </application>
 
 </manifest>

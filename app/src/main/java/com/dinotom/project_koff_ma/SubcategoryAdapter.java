@@ -1,5 +1,7 @@
 package com.dinotom.project_koff_ma;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,17 +9,24 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dinotom.project_koff_ma.business_entities.BusinessEntitiesActivity;
 import com.dinotom.project_koff_ma.pojo.category.Child;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import static com.dinotom.project_koff_ma.MainActivity.MAIN_CATEGORY_CHILDREN;
+import static com.dinotom.project_koff_ma.MainActivity.MAIN_CATEGORY_NAME;
+import static com.dinotom.project_koff_ma.MainActivity.MAIN_CATEGORY_PK;
+
 public class SubcategoryAdapter extends RecyclerView.Adapter<SubcategoryAdapter.SubcategoryViewHolder>
 {
+    private Context mCtx;
     private ArrayList<Child> subcategoryList;
 
-    SubcategoryAdapter(ArrayList<Child> subcategories)
+    SubcategoryAdapter(Context mCtx, ArrayList<Child> subcategories)
     {
+        this.mCtx = mCtx;
         subcategoryList = subcategories;
     }
 
@@ -43,6 +52,17 @@ public class SubcategoryAdapter extends RecyclerView.Adapter<SubcategoryAdapter.
 
         holder.subcategoryName.setText(subcategory.getName());
         Picasso.get().load(subcategory.getImage()).into(holder.subcategoryImage);
+
+        holder.view.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(mCtx, BusinessEntitiesActivity.class);
+                intent.putExtra("SUBCATEGORY_PK", subcategory.getPk());
+                mCtx.startActivity(intent);
+            }
+        });
     }
 
     class SubcategoryViewHolder extends RecyclerView.ViewHolder

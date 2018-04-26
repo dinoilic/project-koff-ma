@@ -30,7 +30,7 @@ public class SubcategoryActivity extends AppCompatActivity
         String categoryName = intent.getStringExtra(MainActivity.MAIN_CATEGORY_NAME);
         ArrayList<Child> categoryChildren = (ArrayList<Child>)intent.getSerializableExtra(MainActivity.MAIN_CATEGORY_CHILDREN);
 
-        subcategoryAdapter = new SubcategoryAdapter(categoryChildren);
+        subcategoryAdapter = new SubcategoryAdapter(getApplicationContext(), categoryChildren);
         recyclerView.setAdapter(subcategoryAdapter);
     }
 
