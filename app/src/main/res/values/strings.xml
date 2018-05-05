@@ -5,4 +5,8 @@
     <string name="user_token_key">com.dinotom.project_koff_ma.USER_TOKEN</string>
 
     <string name="main_activity_event">MainActivityEvent</string>
+
+    <string name="businessentity_distance">Udaljenost</string>
+    <string name="businessentity_open">OTVORENO</string>
+    <string name="businessentity_closed">ZATVORENO</string>
 </resources>

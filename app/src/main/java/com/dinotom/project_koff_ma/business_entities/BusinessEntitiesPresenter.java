@@ -34,40 +34,7 @@ public class BusinessEntitiesPresenter implements OnLoadMoreListener
         this.currentPage = 1;
         this.SubcategoryPk = SubcategoryPk;
         this.apiInterface = APIClient.getClient().create(APIInterface.class);
-        //addItems();
     }
-
-    /*private void addItems()
-    {
-        Call<BusinessEntityPage> businessEntityPageCall = apiInterface.getBusinessEntities(
-                SubcategoryPk,
-                "45.350127,14.407801",
-                50.0,
-                1,
-                "rating_asc",
-                null
-                );
-        businessEntityPageCall.enqueue(new Callback<BusinessEntityPage>()
-        {
-            @Override
-            public void onResponse(Call<BusinessEntityPage> call, Response<BusinessEntityPage> response)
-            {
-                BusinessEntityPage businessEntityPage = response.body();
-                if (businessEntityPage != null) {
-                    currentPage += 1;
-                    view.addItems(businessEntityPage.getResults());
-                }
-                Log.d(TAG, "addItems Success");
-            }
-
-            @Override
-            public void onFailure(Call<BusinessEntityPage> call, Throwable t)
-            {
-                call.cancel();
-                Log.d(TAG, "addItems Failure");
-            }
-        });
-    }*/
 
     private void getBusinessEntities()
     {
@@ -79,7 +46,7 @@ public class BusinessEntitiesPresenter implements OnLoadMoreListener
                 SubcategoryPk,
                 "45.350127,14.407801",
                 50.0,
-                1,
+                0,
                 "rating_asc",
                 currentPage
         );

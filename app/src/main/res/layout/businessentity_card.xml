@@ -1,29 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="1dp"
-    >
+    android:layout_height="wrap_content"
+    android:padding="1dp">
 
     <android.support.v7.widget.CardView
         android:id="@+id/cv_businessentity"
         android:layout_width="match_parent"
-        android:layout_height="124dp">
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="1dp">
 
             <TextView
                 android:id="@+id/businessentity_name"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:text="Ovo je tekst"
-                android:textSize="16sp" />
+                android:text="Automehaničar Rijeka d.o.o."
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/businessentity_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Primorska 41, Rijeka, 51000"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/businessentity_name" />
+
+            <TextView
+                android:id="@+id/businessentity_isworking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="OTVORENO"
+                android:textColor="@android:color/holo_green_dark"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <RatingBar
+                android:id="@+id/businessentity_avg_rating"
+                style="?android:attr/ratingBarStyleIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                android:max="5"
+                android:rating="0"
+                android:scaleX="0.65"
+                android:scaleY="0.65"
+                android:stepSize="0.1"
+                android:transformPivotX="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/businessentity_address" />
+
+            <TextView
+                android:id="@+id/businessentity_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Udaljenost 12.3 km"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.CardView>
 
