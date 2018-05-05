@@ -4,12 +4,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.dinotom.project_koff_ma.business_entities.BusinessEntitiesActivity">
+    tools:context="com.dinotom.project_koff_ma.business_entities.BusinessEntitiesActivity"
+    tools:layout_editor_absoluteY="25dp">
+
+    <!--
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/businessentity_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        android:layout_marginTop="?android:attr/actionBarSize"
+        app:layout_constraintTop_toBottomOf="@+id/businessentity_appbar"
+    -->
+
+    <Button
+        android:id="@+id/sort_button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="SORT"
+        app:layout_constraintBottom_toTopOf="@+id/button_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/filter_button"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/filter_button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="FILTER"
+        app:layout_constraintBottom_toTopOf="@+id/button_guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/sort_button"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_businessentities"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="1dp" />
+        android:layout_width="0dp"
+
+        android:layout_height="0dp"
+        android:padding="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/button_guideline" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/button_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.09" />
 
 </android.support.constraint.ConstraintLayout>

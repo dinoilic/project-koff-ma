@@ -60,6 +60,7 @@ public class SubcategoryAdapter extends RecyclerView.Adapter<SubcategoryAdapter.
             {
                 Intent intent = new Intent(mCtx, BusinessEntitiesActivity.class);
                 intent.putExtra("SUBCATEGORY_PK", subcategory.getPk());
+                intent.putExtra("SUBCATEGORY_NAME", subcategory.getName());
                 mCtx.startActivity(intent);
             }
         });

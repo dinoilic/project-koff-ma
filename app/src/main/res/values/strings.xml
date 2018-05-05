@@ -4,9 +4,19 @@
     <string name="user_accounts_file">com.dinotom.project_koff_ma.USER_ACCOUNTS_FILE</string>
     <string name="user_token_key">com.dinotom.project_koff_ma.USER_TOKEN</string>
 
+    <string name="business_activities_file">com.dinotom.project_koff_ma.BUSINESS_ACTIVITIES_FILE</string>
+    <string name="business_activities_sort_mode">com.dinotom.project_koff_ma.BUSINESS_ACTIVITIES_SORT_MODE</string>
+
     <string name="main_activity_event">MainActivityEvent</string>
 
     <string name="businessentity_distance">Udaljenost</string>
     <string name="businessentity_open">OTVORENO</string>
     <string name="businessentity_closed">ZATVORENO</string>
+
+    <string name="businessentity_sort_dialog_title">Sort</string>
+    <string name="businessentity_sortby_distance">Udaljenost</string>
+    <string name="businessentity_sortby_rating_desc">Najviša ocjena</string>
+    <string name="businessentity_sortby_rating_asc">Najniža ocjena</string>
+    <string name="businessentity_sortby_az">A-Z</string>
+    <string name="businessentity_sortby_za">Z-A</string>
 </resources>

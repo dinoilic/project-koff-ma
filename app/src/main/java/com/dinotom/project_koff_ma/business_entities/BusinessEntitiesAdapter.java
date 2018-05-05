@@ -46,7 +46,6 @@ public class BusinessEntitiesAdapter extends RecyclerView.Adapter<BusinessEntiti
         holder.businessEntityName.setText(businessEntities.get(position).getName());
         holder.businessEntityAddress.setText(businessEntities.get(position).getAddress());
 
-        String dist_string = KoffGlobal.getAppContext().getResources().getString(R.string.businessentity_distance);
         String distance = String.format("%.1f km", businessEntities.get(position).getDistance() / 1000.0);
 
         holder.businessEntityDistanceTo.setText(distance);

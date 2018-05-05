@@ -47,7 +47,7 @@ public class BusinessEntitiesPresenter implements OnLoadMoreListener
                 "45.350127,14.407801",
                 50.0,
                 0,
-                "rating_asc",
+                BusinessEntitiesUtilities.getSortMode(),
                 currentPage
         );
         businessEntityPageCall.enqueue(new Callback<BusinessEntityPage>()

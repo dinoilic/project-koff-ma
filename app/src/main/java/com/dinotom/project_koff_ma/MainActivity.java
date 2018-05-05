@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.dinotom.project_koff_ma.business_entities.BusinessEntitiesActivity;
 import com.dinotom.project_koff_ma.pojo.category.Category;
 import com.dinotom.project_koff_ma.pojo.category.Result;
 import com.squareup.otto.Bus;
@@ -44,6 +45,8 @@ public class MainActivity extends AppCompatActivity
 
         recyclerView = (RecyclerView) findViewById(R.id.rv_main);
         recyclerView.setLayoutManager(new GridLayoutManager(KoffGlobal.getAppContext(), 3));
+
+        BusinessEntitiesActivity.resetSortAndFilterData();
     }
 
     @Override
