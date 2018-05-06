@@ -85,13 +85,22 @@ public class BusinessEntitiesUtilities
         return KoffGlobal.getAppContext().getResources().getString(stringID);
     }
 
-    private static SharedPreferences getSharedPrefs()
+    static SharedPreferences getSharedPrefs()
     {
         Context context = KoffGlobal.getAppContext();
         String preferenceFileName = context.getResources().getString(R.string.business_activities_file); // name of preference file
         SharedPreferences sharedPref = context.getSharedPreferences(preferenceFileName, Context.MODE_PRIVATE);
 
         return sharedPref;
+    }
+
+    static int getIsWorking()
+    {
+        SharedPreferences sharedPrefs = getSharedPrefs();
+        String isWorkingSetting = KoffGlobal.getAppContext().getResources().getString(R.string.business_activities_filter_isworking);
+        boolean isWorking = sharedPrefs.getBoolean(isWorkingSetting, false);
+
+        return isWorking ? 1 : 0;
     }
 
     static String getSortMode()

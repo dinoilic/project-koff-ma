@@ -7,6 +7,9 @@
     <string name="business_activities_file">com.dinotom.project_koff_ma.BUSINESS_ACTIVITIES_FILE</string>
     <string name="business_activities_sort_mode">com.dinotom.project_koff_ma.BUSINESS_ACTIVITIES_SORT_MODE</string>
 
+    <string name="business_activities_filter_isworking">com.dinotom.project_koff_ma.BUSINESS_ACTIVITIES_FILTER_ISWORKING</string>
+    <string name="business_activities_filter_isworking_title">Prikaži samo otvorene poslove</string>
+
     <string name="main_activity_event">MainActivityEvent</string>
 
     <string name="businessentity_distance">Udaljenost</string>

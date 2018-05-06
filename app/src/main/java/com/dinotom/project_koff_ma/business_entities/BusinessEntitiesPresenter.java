@@ -46,7 +46,7 @@ public class BusinessEntitiesPresenter implements OnLoadMoreListener
                 SubcategoryPk,
                 "45.350127,14.407801",
                 50.0,
-                0,
+                BusinessEntitiesUtilities.getIsWorking(),
                 BusinessEntitiesUtilities.getSortMode(),
                 currentPage
         );

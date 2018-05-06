@@ -1,5 +1,6 @@
 package com.dinotom.project_koff_ma.business_entities;
 
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,6 +34,8 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
     BusinessEntitiesPresenter businessEntitiesPresenter;
 
     Paginate paginate;
+
+    SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -76,9 +79,21 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
             @Override
             public void onClick(View v)
             {
-                showFilterDialog();
+                startFilterSettingsActivity();
             }
         });
+
+        preferences = BusinessEntitiesUtilities.getSharedPrefs();
+        SharedPreferences.OnSharedPreferenceChangeListener listener =
+                new SharedPreferences.OnSharedPreferenceChangeListener()
+                {
+                    public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
+                    {
+                        if(prefs.equals(preferences))
+                            recreate();
+                    }
+                };
+        preferences.registerOnSharedPreferenceChangeListener(listener);
 
        /* Toolbar myAppBar = (Toolbar) findViewById(R.id.businessentity_appbar);
         setSupportActionBar(myAppBar);
@@ -120,9 +135,10 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
         builder.show();
     }
 
-    private void showFilterDialog()
+    private void startFilterSettingsActivity()
     {
-        FragmentManager fm = getSupportFragmentManager();
+        Intent intent = new Intent(getBaseContext(), FilterSettingsActivity.class);
+        getBaseContext().startActivity(intent);
     }
 
     public static void resetSortAndFilterData()
