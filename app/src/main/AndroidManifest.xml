@@ -24,8 +24,8 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".SubcategoryActivity"></activity>
-        <activity android:name=".business_entities.BusinessEntitiesActivity"></activity>
+        <activity android:name=".SubcategoryActivity" />
+        <activity android:name=".business_entities.BusinessEntitiesActivity" />
     </application>
 
 </manifest>

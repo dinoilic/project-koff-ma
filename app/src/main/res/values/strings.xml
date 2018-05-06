@@ -19,4 +19,6 @@
     <string name="businessentity_sortby_rating_asc">Najniža ocjena</string>
     <string name="businessentity_sortby_az">A-Z</string>
     <string name="businessentity_sortby_za">Z-A</string>
+
+    <string name="businessentity_filter_dialog_title">Filter</string>
 </resources>

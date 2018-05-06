@@ -1,18 +1,23 @@
 package com.dinotom.project_koff_ma.business_entities;
 
+import android.support.v4.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.Button;
 
 import com.dinotom.project_koff_ma.KoffGlobal;
 import com.dinotom.project_koff_ma.R;
 import com.dinotom.project_koff_ma.pojo.business_entities.BusinessEntity;
+import com.dinotom.project_koff_ma.pojo.business_entities.DayWorkingHours;
 
 import java.util.List;
 
@@ -65,6 +70,16 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
             }
         });
 
+        Button filterButton = (Button) findViewById(R.id.filter_button);
+        filterButton.setOnClickListener( new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                showFilterDialog();
+            }
+        });
+
        /* Toolbar myAppBar = (Toolbar) findViewById(R.id.businessentity_appbar);
         setSupportActionBar(myAppBar);
 
@@ -75,20 +90,39 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String title = BusinessEntitiesUtilities.getStringFromStringResources(R.string.businessentity_sort_dialog_title);
+
+        CharSequence[] currentSortModeNames = BusinessEntitiesUtilities.SortModeNames.clone();
+        final BusinessEntitiesUtilities.SortMode[] sortModeEnumValues = BusinessEntitiesUtilities.SortMode.values();
+
+        for(int i = 0; i < sortModeEnumValues.length; ++i)
+        {
+            if(sortModeEnumValues[i].toString().equals(BusinessEntitiesUtilities.getSortMode()))
+            {
+                SpannableString selectedSort = new SpannableString(currentSortModeNames[i]);
+                selectedSort.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, currentSortModeNames[i].length(),0);
+                currentSortModeNames[i] = selectedSort;
+            }
+        }
+
         builder.setTitle(title);
-        builder.setItems(BusinessEntitiesUtilities.SortModeNames, new DialogInterface.OnClickListener()
+        builder.setItems(currentSortModeNames, new DialogInterface.OnClickListener()
         {
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
                 BusinessEntitiesUtilities.setStringSetting(
                         R.string.business_activities_sort_mode,
-                        BusinessEntitiesUtilities.SortMode.values()[which].toString()
+                        sortModeEnumValues[which].toString()
                 );
                 recreate();
             }
         });
         builder.show();
+    }
+
+    private void showFilterDialog()
+    {
+        FragmentManager fm = getSupportFragmentManager();
     }
 
     public static void resetSortAndFilterData()
