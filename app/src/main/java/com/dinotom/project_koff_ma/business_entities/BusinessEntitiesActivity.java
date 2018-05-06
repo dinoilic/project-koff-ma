@@ -36,6 +36,7 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
     Paginate paginate;
 
     SharedPreferences preferences;
+    SharedPreferences.OnSharedPreferenceChangeListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -84,7 +85,7 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
         });
 
         preferences = BusinessEntitiesUtilities.getSharedPrefs();
-        SharedPreferences.OnSharedPreferenceChangeListener listener =
+        listener =
                 new SharedPreferences.OnSharedPreferenceChangeListener()
                 {
                     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
