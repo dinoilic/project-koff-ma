@@ -44,7 +44,7 @@ public class BusinessEntitiesPresenter implements OnLoadMoreListener
 
         Call<BusinessEntityPage> businessEntityPageCall = apiInterface.getBusinessEntities(
                 SubcategoryPk,
-                "45.350127,14.407801",
+                BusinessEntitiesUtilities.getLocation(),
                 BusinessEntitiesUtilities.getRadius().doubleValue(),
                 BusinessEntitiesUtilities.getIsWorking(),
                 BusinessEntitiesUtilities.getSortMode(),

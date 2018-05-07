@@ -122,6 +122,15 @@ public class BusinessEntitiesUtilities
         return radius;
     }
 
+    static String getLocation()
+    {
+        SharedPreferences sharedPrefs = getSharedPrefs();
+        String locationSetting = KoffGlobal.getAppContext().getResources().getString(R.string.business_activities_filter_location);
+        String location = sharedPrefs.getString(locationSetting, "45.350127,14.407801");
+
+        return location;
+    }
+
     static void setStringSetting (int parameterID, String parameter)
     {
         SharedPreferences.Editor editor = getSharedPrefs().edit();

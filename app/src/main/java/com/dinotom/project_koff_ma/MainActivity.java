@@ -1,5 +1,9 @@
 package com.dinotom.project_koff_ma;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -29,6 +33,8 @@ public class MainActivity extends AppCompatActivity
     public static final String MAIN_CATEGORY_NAME = "com.dinotom.project_koff_ma.MAIN_CATEGORY_NAME";
     public static final String MAIN_CATEGORY_CHILDREN = "com.dinotom.project_koff_ma.MAIN_CATEGORY_CHILDREN";
 
+    private static final int KOFF_COARSE_LOCATION = 1;
+
     APIInterface apiInterface;
     RecyclerView recyclerView;
     CategoryAdapter categoryAdapter;
@@ -47,6 +53,17 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setLayoutManager(new GridLayoutManager(KoffGlobal.getAppContext(), 3));
 
         BusinessEntitiesActivity.resetSortAndFilterData();
+
+        // Request Location Permission
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED)
+        {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                        KOFF_COARSE_LOCATION);
+        }
     }
 
     @Override
@@ -120,4 +137,27 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
+
+    /*
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case KOFF_COARSE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
+    }*/
 }

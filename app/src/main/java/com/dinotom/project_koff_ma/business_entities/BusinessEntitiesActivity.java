@@ -1,17 +1,22 @@
 package com.dinotom.project_koff_ma.business_entities;
 
+import android.Manifest;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.support.v4.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -19,6 +24,9 @@ import com.dinotom.project_koff_ma.KoffGlobal;
 import com.dinotom.project_koff_ma.R;
 import com.dinotom.project_koff_ma.pojo.business_entities.BusinessEntity;
 import com.dinotom.project_koff_ma.pojo.business_entities.DayWorkingHours;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.List;
 
@@ -28,6 +36,8 @@ import ru.alexbykov.nopaginate.paginate.PaginateBuilder;
 
 public class BusinessEntitiesActivity extends AppCompatActivity implements IBusinessEntitiesView
 {
+    private static final String TAG = BusinessEntitiesActivity.class.getSimpleName();
+
     RecyclerView recyclerView;
 
     BusinessEntitiesAdapter businessEntitiesAdapter;
@@ -37,6 +47,8 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
 
     SharedPreferences preferences;
     SharedPreferences.OnSharedPreferenceChangeListener listener;
+
+    FusedLocationProviderClient mFusedLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -95,6 +107,29 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
                     }
                 };
         preferences.registerOnSharedPreferenceChangeListener(listener);
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED)
+        {
+            mFusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            // Got last known location. In some rare situations this can be null.
+                            if (location != null) {
+                                String loc = String.format("%f,%f", location.getLatitude(), location.getLongitude());
+                                Log.d(TAG, " " + loc);
+                                BusinessEntitiesUtilities.setStringSetting(R.string.business_activities_filter_location, loc);
+                            }
+                            else
+                            {
+                                BusinessEntitiesUtilities.setStringSetting(R.string.business_activities_filter_location, "45.350127,14.407801");
+                                Log.d(TAG, "Location is null!");
+                            }
+                        }
+                    });
+        }
 
        /* Toolbar myAppBar = (Toolbar) findViewById(R.id.businessentity_appbar);
         setSupportActionBar(myAppBar);

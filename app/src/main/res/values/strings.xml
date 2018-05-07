@@ -16,6 +16,8 @@
     <string name="business_activities_filter_radius_unit">km</string>
     <string name="business_activities_filter_radius_summary">$1</string>
 
+    <string name="business_activities_filter_location">com.dinotom.project_koff_ma.BUSINESS_ACTIVITIES_FILTER_LOCATION</string>
+
     <string name="main_activity_event">MainActivityEvent</string>
 
     <string name="businessentity_distance">Udaljenost</string>
