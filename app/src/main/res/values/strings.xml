@@ -5,10 +5,16 @@
     <string name="user_token_key">com.dinotom.project_koff_ma.USER_TOKEN</string>
 
     <string name="business_activities_file">com.dinotom.project_koff_ma.BUSINESS_ACTIVITIES_FILE</string>
+
     <string name="business_activities_sort_mode">com.dinotom.project_koff_ma.BUSINESS_ACTIVITIES_SORT_MODE</string>
 
     <string name="business_activities_filter_isworking">com.dinotom.project_koff_ma.BUSINESS_ACTIVITIES_FILTER_ISWORKING</string>
     <string name="business_activities_filter_isworking_title">Prikaži samo otvorene poslove</string>
+
+    <string name="business_activities_filter_radius">com.dinotom.project_koff_ma.BUSINESS_ACTIVITIES_FILTER_RADIUS</string>
+    <string name="business_activities_filter_radius_title">Maksimalna udaljenost</string>
+    <string name="business_activities_filter_radius_unit">km</string>
+    <string name="business_activities_filter_radius_summary">$1</string>
 
     <string name="main_activity_event">MainActivityEvent</string>
 

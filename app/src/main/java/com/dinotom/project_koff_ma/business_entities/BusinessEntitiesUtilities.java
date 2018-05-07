@@ -41,6 +41,7 @@ public class BusinessEntitiesUtilities
         }
     }
 
+    // Pretvoriti u array Stringova, ali u xml-u
     static CharSequence SortModeNames[] = new CharSequence[]{
             getStringFromStringResources(R.string.businessentity_sortby_distance),
             getStringFromStringResources(R.string.businessentity_sortby_rating_desc),
@@ -94,6 +95,15 @@ public class BusinessEntitiesUtilities
         return sharedPref;
     }
 
+    static String getSortMode()
+    {
+        SharedPreferences sharedPrefs = getSharedPrefs();
+        String sortModeSetting = KoffGlobal.getAppContext().getResources().getString(R.string.business_activities_sort_mode);
+        String sortMode = sharedPrefs.getString(sortModeSetting, SortMode.DISTANCE.toString());
+
+        return sortMode;
+    }
+
     static int getIsWorking()
     {
         SharedPreferences sharedPrefs = getSharedPrefs();
@@ -103,13 +113,13 @@ public class BusinessEntitiesUtilities
         return isWorking ? 1 : 0;
     }
 
-    static String getSortMode()
+    static Integer getRadius()
     {
         SharedPreferences sharedPrefs = getSharedPrefs();
-        String sortModeSetting = KoffGlobal.getAppContext().getResources().getString(R.string.business_activities_sort_mode);
-        String sortMode = sharedPrefs.getString(sortModeSetting, SortMode.DISTANCE.toString());
+        String radiusSetting = KoffGlobal.getAppContext().getResources().getString(R.string.business_activities_filter_radius);
+        int radius = sharedPrefs.getInt(radiusSetting, 10);
 
-        return sortMode;
+        return radius;
     }
 
     static void setStringSetting (int parameterID, String parameter)

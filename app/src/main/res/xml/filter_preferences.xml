@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.dinotom.project_koff_ma.business_entities.SeekBarPreference
+        android:defaultValue="10"
+        android:key="@string/business_activities_filter_radius"
+        android:min="1"
+        android:max="50"
+        android:summary="@string/business_activities_filter_radius_summary"
+        android:text="@string/business_activities_filter_radius_unit"
+        android:title="@string/business_activities_filter_radius_title" />
     <CheckBoxPreference
         android:key="@string/business_activities_filter_isworking"
         android:title="@string/business_activities_filter_isworking_title"
