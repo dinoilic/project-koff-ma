@@ -48,7 +48,7 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
     SharedPreferences preferences;
     SharedPreferences.OnSharedPreferenceChangeListener listener;
 
-    FusedLocationProviderClient mFusedLocationClient;
+    //FusedLocationProviderClient mFusedLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -108,28 +108,7 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
                 };
         preferences.registerOnSharedPreferenceChangeListener(listener);
 
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED)
-        {
-            mFusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-                            // Got last known location. In some rare situations this can be null.
-                            if (location != null) {
-                                String loc = String.format("%f,%f", location.getLatitude(), location.getLongitude());
-                                Log.d(TAG, " " + loc);
-                                BusinessEntitiesUtilities.setStringSetting(R.string.business_activities_filter_location, loc);
-                            }
-                            else
-                            {
-                                BusinessEntitiesUtilities.setStringSetting(R.string.business_activities_filter_location, "45.350127,14.407801");
-                                Log.d(TAG, "Location is null!");
-                            }
-                        }
-                    });
-        }
+        BusinessEntitiesUtilities.getLastLocation(getBaseContext(), this);
 
        /* Toolbar myAppBar = (Toolbar) findViewById(R.id.businessentity_appbar);
         setSupportActionBar(myAppBar);

@@ -1,12 +1,20 @@
 package com.dinotom.project_koff_ma.business_entities;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.dinotom.project_koff_ma.KoffGlobal;
 import com.dinotom.project_koff_ma.R;
 import com.dinotom.project_koff_ma.pojo.business_entities.DayWorkingHours;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -131,6 +139,15 @@ public class BusinessEntitiesUtilities
         return location;
     }
 
+    static Boolean getIsCustomLocation()
+    {
+        SharedPreferences sharedPrefs = getSharedPrefs();
+        String isCustomLocationSetting = getStringFromStringResources(R.string.business_activities_filter_location_is_custom);
+        Boolean isCustomLocation = sharedPrefs.getBoolean(isCustomLocationSetting, false);
+
+        return isCustomLocation;
+    }
+
     static void setStringSetting (int parameterID, String parameter)
     {
         SharedPreferences.Editor editor = getSharedPrefs().edit();
@@ -153,5 +170,39 @@ public class BusinessEntitiesUtilities
         String parameterName = KoffGlobal.getAppContext().getResources().getString(parameterID);
         editor.putInt(parameterName, parameter);
         editor.commit(); // use "apply" if we want asynchronous later
+    }
+
+    static void setBoolSetting(int parameterID, Boolean parameter)
+    {
+        SharedPreferences.Editor editor = getSharedPrefs().edit();
+        String parameterName = KoffGlobal.getAppContext().getResources().getString(parameterID);
+        editor.putBoolean(parameterName, parameter);
+        editor.commit(); // use "apply" if we want asynchronous later
+    }
+
+    static void getLastLocation(Context context, Activity activity)
+    {
+        FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity);
+        if (!BusinessEntitiesUtilities.getIsCustomLocation() &&
+                ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+        {
+            mFusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(activity, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            // Got last known location. In some rare situations this can be null.
+                            if (location != null) {
+                                String loc = String.format("%f,%f", location.getLatitude(), location.getLongitude());
+                                Log.d(TAG, " " + loc);
+                                BusinessEntitiesUtilities.setStringSetting(R.string.business_activities_filter_location, loc);
+                            }
+                            else
+                            {
+                                BusinessEntitiesUtilities.setStringSetting(R.string.business_activities_filter_location, "45.350127,14.407801");
+                                Log.d(TAG, "Location is null!");
+                            }
+                        }
+                    });
+        }
     }
 }
