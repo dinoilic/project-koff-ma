@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusable="true"
-    android:clickable="true"
     android:background="@drawable/item_sel"
+    android:clickable="true"
+    android:focusable="true"
     android:padding="1dp">
 
     <android.support.v7.widget.CardView
@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="0dp"
-        card_view:cardElevation="0dp"
+        card_view:cardElevation="2dp"
         card_view:contentPadding="5dp">
 
         <LinearLayout

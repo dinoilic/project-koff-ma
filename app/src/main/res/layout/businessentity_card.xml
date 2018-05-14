@@ -9,7 +9,8 @@
     <android.support.v7.widget.CardView
         android:id="@+id/cv_businessentity"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:cardElevation="5dp">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/relativeLayout"

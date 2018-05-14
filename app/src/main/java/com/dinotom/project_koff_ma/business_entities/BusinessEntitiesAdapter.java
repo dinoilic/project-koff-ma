@@ -1,5 +1,7 @@
 package com.dinotom.project_koff_ma.business_entities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,14 +22,17 @@ import java.util.List;
 public class BusinessEntitiesAdapter extends RecyclerView.Adapter<BusinessEntitiesAdapter.ViewHolder>
 {
     private List<BusinessEntity> businessEntities;
+    private Context mCtx;
 
-    BusinessEntitiesAdapter()
+    BusinessEntitiesAdapter(Context mCtx)
     {
+        this.mCtx = mCtx;
         businessEntities = new ArrayList<>();
     }
 
-    BusinessEntitiesAdapter(List<BusinessEntity> newBusinessEntities)
+    BusinessEntitiesAdapter(Context mCtx, List<BusinessEntity> newBusinessEntities)
     {
+        this.mCtx = mCtx;
         businessEntities = newBusinessEntities;
     }
 
@@ -74,6 +79,15 @@ public class BusinessEntitiesAdapter extends RecyclerView.Adapter<BusinessEntiti
         {
             e.printStackTrace();
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mCtx, BusinessEntityInfoActivity.class);
+                intent.putExtra("ENTITY_PK", businessEntities.get(position).getPk());
+                mCtx.startActivity(intent);
+            }
+        });
     }
 
     public void addItems(List<BusinessEntity> items)

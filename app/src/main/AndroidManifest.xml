@@ -32,6 +32,7 @@
         <activity android:name=".SubcategoryActivity" />
         <activity android:name=".business_entities.BusinessEntitiesActivity" />
         <activity android:name=".business_entities.FilterSettingsActivity" />
+        <activity android:name=".business_entities.BusinessEntityInfoActivity" />
     </application>
 
 </manifest>

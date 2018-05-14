@@ -61,7 +61,7 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
         recyclerView = (RecyclerView) findViewById(R.id.rv_businessentities);
         recyclerView.setLayoutManager(new LinearLayoutManager(KoffGlobal.getAppContext()));
 
-        businessEntitiesAdapter = new BusinessEntitiesAdapter();
+        businessEntitiesAdapter = new BusinessEntitiesAdapter(KoffGlobal.getAppContext());
         recyclerView.setAdapter(businessEntitiesAdapter);
 
         Intent intent = getIntent();
