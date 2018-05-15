@@ -21,6 +21,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.noties.markwon.Markwon;
 
 public class BusinessEntityInfoActivity extends AppCompatActivity {
     APIInterface apiInterface;
@@ -97,6 +98,10 @@ public class BusinessEntityInfoActivity extends AppCompatActivity {
                         cwLayout.removeView(tvWeb);
                     }
                 }
+
+                TextView tvDescription = findViewById(R.id.entityDescription);
+                String description = response.body().getDescription() != null ? response.body().getDescription() : "";
+                Markwon.setMarkdown(tvDescription, description);
             }
 
             @Override

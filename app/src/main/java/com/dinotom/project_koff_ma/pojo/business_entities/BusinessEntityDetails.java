@@ -19,6 +19,9 @@ public class BusinessEntityDetails {
     @SerializedName("location")
     @Expose
     private List<Double> location = null;
+    @SerializedName("description")
+    @Expose
+    private String description;
     @SerializedName("working_hours")
     @Expose
     private List<DayWorkingHours> workingHours = null;
@@ -43,6 +46,10 @@ public class BusinessEntityDetails {
 
     public List<Double> getLocation() {
         return location;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public List<DayWorkingHours> getWorkingHours() {
