@@ -65,13 +65,13 @@ public class BusinessEntitiesAdapter extends RecyclerView.Adapter<BusinessEntiti
             if(!workingHours.isEmpty() && BusinessEntitiesUtilities.isWorkingNow(workingHours))
             {
                 String open = KoffGlobal.getAppContext().getResources().getString(R.string.businessentity_open);
-                holder.businessEntityIsWorking.setTextColor(Color.GREEN);
+                holder.businessEntityIsWorking.setTextColor(KoffGlobal.getAppContext().getResources().getColor(R.color.openColor));
                 holder.businessEntityIsWorking.setText(open);
             }
             else
             {
                 String closed = KoffGlobal.getAppContext().getResources().getString(R.string.businessentity_closed);
-                holder.businessEntityIsWorking.setTextColor(Color.RED);
+                holder.businessEntityIsWorking.setTextColor(KoffGlobal.getAppContext().getResources().getColor(R.color.closedColor));
                 holder.businessEntityIsWorking.setText(closed);
             }
         }
@@ -85,6 +85,8 @@ public class BusinessEntitiesAdapter extends RecyclerView.Adapter<BusinessEntiti
             public void onClick(View v) {
                 Intent intent = new Intent(mCtx, BusinessEntityInfoActivity.class);
                 intent.putExtra("ENTITY_PK", businessEntities.get(position).getPk());
+                intent.putExtra("ENTITY_AVG_SCORE", businessEntities.get(position).getAvgRating());
+                intent.putExtra("ENTITY_WORKING", holder.businessEntityIsWorking.getText());
                 mCtx.startActivity(intent);
             }
         });

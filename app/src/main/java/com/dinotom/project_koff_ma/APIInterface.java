@@ -2,6 +2,7 @@ package com.dinotom.project_koff_ma;
 
 import com.dinotom.project_koff_ma.pojo.TokenValidation;
 import com.dinotom.project_koff_ma.pojo.business_entities.BusinessEntityPage;
+import com.dinotom.project_koff_ma.pojo.business_entities.BusinessEntityDetails;
 import com.dinotom.project_koff_ma.pojo.category.Category;
 import com.dinotom.project_koff_ma.pojo.UserToken;
 
@@ -11,6 +12,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface APIInterface
@@ -32,4 +34,7 @@ public interface APIInterface
                                                  @Query("is_working") Integer is_working,
                                                  @Query("sort") String sort_mode,
                                                  @Query("page") Integer page);
+
+    @GET("api/v1/entities/{id}/")
+    Call<BusinessEntityDetails> getBusinessEntityDetails(@Path("id") Integer id);
 }
