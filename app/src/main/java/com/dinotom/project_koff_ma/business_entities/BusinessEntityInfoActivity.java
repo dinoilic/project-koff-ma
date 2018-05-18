@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +15,7 @@ import com.dinotom.project_koff_ma.APIInterface;
 import com.dinotom.project_koff_ma.KoffGlobal;
 import com.dinotom.project_koff_ma.R;
 import com.dinotom.project_koff_ma.pojo.business_entities.BusinessEntityDetails;
+import com.dinotom.project_koff_ma.pojo.business_entities.CommentAndRating;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,12 +24,22 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.alexbykov.nopaginate.paginate.Paginate;
+import ru.alexbykov.nopaginate.paginate.PaginateBuilder;
 import ru.noties.markwon.Markwon;
 
-public class BusinessEntityInfoActivity extends AppCompatActivity {
+public class BusinessEntityInfoActivity extends AppCompatActivity implements ICommentsAndRatingsView
+{
+
     APIInterface apiInterface;
     private static final String TAG = BusinessEntityInfoActivity.class.getSimpleName();
 
+    RecyclerView recyclerView;
+
+    CommentsAndRatingsAdapter commentsAndRatingsAdapter;
+    CommentsAndRatingsPresenter commentsAndRatingsPresenter;
+
+    Paginate paginate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -112,10 +125,46 @@ public class BusinessEntityInfoActivity extends AppCompatActivity {
             }
         });
 
+        recyclerView = findViewById(R.id.rv_commentsandratings_in_activity);
+        recyclerView.setLayoutManager(new LinearLayoutManager(KoffGlobal.getAppContext()));
+
+        commentsAndRatingsAdapter = new CommentsAndRatingsAdapter(KoffGlobal.getAppContext());
+        recyclerView.setAdapter(commentsAndRatingsAdapter);
+
+        commentsAndRatingsPresenter = new CommentsAndRatingsPresenter(this, entityPk);
+
+        paginate = new PaginateBuilder()
+                .with(recyclerView)
+                .setOnLoadMoreListener(commentsAndRatingsPresenter)
+                .setLoadingTriggerThreshold(5) // malo se igrati s ovime
+                .build();
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    @Override
+    public void addItems(List<CommentAndRating> items) { commentsAndRatingsAdapter.addItems(items); }
+
+    @Override
+    public int getItemsNum() { return commentsAndRatingsAdapter.getItemCount(); }
+
+    @Override
+    public void showPaginateLoading(boolean isPaginateLoading) { paginate.showLoading(isPaginateLoading); }
+
+    @Override
+    public void showPaginateError(boolean isPaginateError) { paginate.showError(isPaginateError); }
+
+    @Override
+    public void setPaginateNoMoreData(boolean isNoMoreItems) { paginate.setNoMoreItems(isNoMoreItems); }
+
+    @Override
+    public void onDestroy()
+    {
+        paginate.unbind();
+        super.onDestroy();
     }
 }

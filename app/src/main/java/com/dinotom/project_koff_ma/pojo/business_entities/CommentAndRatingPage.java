@@ -4,7 +4,7 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class BusinessEntityPage
+public class CommentAndRatingPage
 {
     @SerializedName("count")
     @Expose
@@ -17,7 +17,7 @@ public class BusinessEntityPage
     private String previous;
     @SerializedName("results")
     @Expose
-    private List<BusinessEntity> results = null;
+    private List<CommentAndRating> results = null;
 
     public Integer getCount()
     {
@@ -29,12 +29,12 @@ public class BusinessEntityPage
         return next;
     }
 
-    public Object getPrevious()
+    public String getPrevious()
     {
         return previous;
     }
 
-    public List<BusinessEntity> getResults()
+    public List<CommentAndRating> getResults()
     {
         return results;
     }

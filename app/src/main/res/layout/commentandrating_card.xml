@@ -7,7 +7,7 @@
     android:padding="1dp">
 
     <android.support.v7.widget.CardView
-        android:id="@+id/cv_businessentity"
+        android:id="@+id/cv_commentandrating"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardElevation="5dp">
@@ -19,37 +19,18 @@
             android:padding="1dp">
 
             <TextView
-                android:id="@+id/businessentity_name"
+                android:id="@+id/user_full_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:text="Automehaničar Rijeka d.o.o."
+                android:text="Ivo Ivić"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/businessentity_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Primorska 41, Rijeka, 51000"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/businessentity_name" />
-
-            <TextView
-                android:id="@+id/businessentity_isworking"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:text="OTVORENO"
-                android:textColor="@android:color/holo_green_dark"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <RatingBar
-                android:id="@+id/businessentity_avg_rating"
+                android:id="@+id/user_rating"
                 style="?android:attr/ratingBarStyleIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -61,16 +42,26 @@
                 android:stepSize="0.1"
                 android:transformPivotX="0dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/businessentity_address" />
+                app:layout_constraintTop_toBottomOf="@+id/user_full_name" />
 
             <TextView
-                android:id="@+id/businessentity_distance"
+                android:id="@+id/updated_at"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Udaljenost 12.3 km"
+                android:gravity="right"
+                android:text="16/01/18"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/comment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc nec lacus ac eros faucibus gravida. Morbi aliquam ut diam eu porttitor. Aliquam erat volutpat. Ut facilisis, nisl sed fermentum tincidunt, ipsum est elementum neque, ac fermentum tellus turpis in tortor. In interdum nec ligula nec porttitor. Morbi luctus sollicitudin dapibus. Aliquam fermentum tempus posuere. Nunc tincidunt mauris a lectus bibendum, eget tincidunt neque porta. "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/user_rating" />
+
 
         </android.support.constraint.ConstraintLayout>
 
