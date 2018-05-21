@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -19,17 +20,13 @@ public class CommentsAndRatingsAdapter extends RecyclerView.Adapter<CommentsAndR
 {
     private List<CommentAndRating> commentAndRatings;
     private Context mCtx;
+    private String userPk;
 
-    CommentsAndRatingsAdapter(Context mCtx)
+    CommentsAndRatingsAdapter(Context mCtx, String userPk)
     {
         this.mCtx = mCtx;
         commentAndRatings = new ArrayList<>();
-    }
-
-    CommentsAndRatingsAdapter(Context mCtx, List<CommentAndRating> newCommentAndRatings)
-    {
-        this.mCtx = mCtx;
-        commentAndRatings = newCommentAndRatings;
+        this.userPk = userPk;
     }
 
     @Override
@@ -51,6 +48,13 @@ public class CommentsAndRatingsAdapter extends RecyclerView.Adapter<CommentsAndR
         holder.userRating.setRating(commentAndRatings.get(position).getRating());
         holder.updatedAt.setText(commentAndRatings.get(position).getUpdatedAt());
         holder.comment.setText(commentAndRatings.get(position).getComment());
+
+        if(!commentAndRatings.get(position).getUser().get(3).equals(userPk) ||
+                commentAndRatings.get(position).getComment().isEmpty())
+        {
+            holder.editButton.setVisibility(View.GONE);
+            holder.deleteButton.setVisibility(View.GONE);
+        }
     }
 
     public void addItems(List<CommentAndRating> items)
@@ -71,14 +75,19 @@ public class CommentsAndRatingsAdapter extends RecyclerView.Adapter<CommentsAndR
         private RatingBar userRating;
         private TextView updatedAt;
         private TextView comment;
+        private Button editButton;
+        private Button deleteButton;
 
-        public ViewHolder(final View itemView) {
+        public ViewHolder(final View itemView)
+        {
             super(itemView);
 
             userFullName = itemView.findViewById(R.id.user_full_name);
             userRating = itemView.findViewById(R.id.user_rating);
             updatedAt = itemView.findViewById(R.id.updated_at);
             comment = itemView.findViewById(R.id.comment);
+            editButton = itemView.findViewById(R.id.edit_comment_button);
+            deleteButton = itemView.findViewById(R.id.delete_comment_button);
         }
     }
 }

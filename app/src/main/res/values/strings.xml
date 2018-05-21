@@ -26,6 +26,9 @@
 
     <string name="business_activities_filter_location_is_custom">com.dinotom.project_koff_ma.BUSINESS_ACTIVITIES_FILTER_LOCATION_IS_CUSTOM</string>
 
+    <string name="business_info_confirm_rating">Potvrdi</string>
+    <string name="business_info_delete_rating">Izbriši</string>
+
     <string name="main_activity_event">MainActivityEvent</string>
 
     <string name="businessentity_distance">Udaljenost</string>

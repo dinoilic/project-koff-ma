@@ -1,9 +1,11 @@
 package com.dinotom.project_koff_ma;
 
 import com.dinotom.project_koff_ma.pojo.TokenValidation;
+import com.dinotom.project_koff_ma.pojo.UserPk;
 import com.dinotom.project_koff_ma.pojo.business_entities.BusinessEntityPage;
 import com.dinotom.project_koff_ma.pojo.business_entities.BusinessEntityDetails;
 import com.dinotom.project_koff_ma.pojo.business_entities.CommentAndRatingPage;
+import com.dinotom.project_koff_ma.pojo.business_entities.UserCommentAndRating;
 import com.dinotom.project_koff_ma.pojo.category.Category;
 import com.dinotom.project_koff_ma.pojo.UserToken;
 
@@ -22,6 +24,9 @@ public interface APIInterface
     @POST("api-token-auth/")
     Call<UserToken> getUserToken(@Field("username") String username, @Field("password") String password);
 
+    @GET("api/v1/get-user-pk/")
+    Call<UserPk> getUserPk();
+
     @GET("api/v1/categories/")
     Call<Category> getMainCategories();
 
@@ -38,6 +43,9 @@ public interface APIInterface
 
     @GET("api/v1/entities/{id}/")
     Call<BusinessEntityDetails> getBusinessEntityDetails(@Path("id") Integer id);
+
+    @GET("api/v1/get-user-comment-and-rating/")
+    Call<UserCommentAndRating> getUserRatingAndComment(@Query("entity") Integer pk);
 
     @GET("api/v1/ratings-and-comments/")
     Call<CommentAndRatingPage> getRatingsAndComments(@Query("entity") Integer pk,

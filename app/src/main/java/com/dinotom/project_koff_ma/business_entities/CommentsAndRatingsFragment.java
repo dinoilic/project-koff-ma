@@ -57,8 +57,8 @@ public class CommentsAndRatingsFragment extends Fragment implements ICommentsAnd
         recyclerView = getView().findViewById(R.id.rv_commentsandratings);
         recyclerView.setLayoutManager(new LinearLayoutManager(KoffGlobal.getAppContext()));
 
-        commentsAndRatingsAdapter = new CommentsAndRatingsAdapter(KoffGlobal.getAppContext());
-        recyclerView.setAdapter(commentsAndRatingsAdapter);
+        //commentsAndRatingsAdapter = new CommentsAndRatingsAdapter(KoffGlobal.getAppContext());
+        //recyclerView.setAdapter(commentsAndRatingsAdapter);
 
         /*Intent intent = getIntent();
         Integer subcategoryPk = intent.getIntExtra("SUBCATEGORY_PK", 0);

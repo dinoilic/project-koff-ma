@@ -52,11 +52,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:autoLink="map"
-                android:autoText="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:gravity="center"
                 android:text="Adresa" />
 
@@ -66,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="5dp"
                 android:isIndicator="true"
                 android:max="5"
                 android:rating="0"
@@ -215,9 +210,81 @@
                 android:id="@+id/entityDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"
+                android:text="Opis"
                 tools:layout_editor_absoluteX="10dp"
                 tools:layout_editor_absoluteY="153dp" />
+
+            <View
+                android:id="@+id/ratingLine1"
+                android:layout_height="2dp"
+                android:layout_width="match_parent"
+                android:background="?android:attr/listDivider"/>
+
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="Ocijeni" />
+
+            <RatingBar
+                android:id="@+id/business_user_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="32dp"
+                android:max="5"
+                android:paddingLeft="0dp"
+                android:rating="0"
+                android:scaleX="0.75"
+                android:scaleY="0.75"
+                android:stepSize="1"
+                android:transformPivotX="0dp" />
+
+            <LinearLayout
+                android:id="@+id/rating_button_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/rating_submit_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text="Potvrdi"
+                    android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/rating_delete_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Izbriši" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/ratingLine2"
+                android:layout_height="2dp"
+                android:layout_width="match_parent"
+                android:background="?android:attr/listDivider"/>
+
+            <Button
+                android:id="@+id/comment_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Komentiraj" />
+
+            <View
+                android:id="@+id/commentBottomLine"
+                android:layout_height="2dp"
+                android:layout_width="match_parent"
+                android:background="?android:attr/listDivider"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_commentsandratings_in_activity"

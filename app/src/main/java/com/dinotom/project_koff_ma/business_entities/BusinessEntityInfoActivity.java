@@ -6,6 +6,9 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,8 +17,10 @@ import com.dinotom.project_koff_ma.APIClient;
 import com.dinotom.project_koff_ma.APIInterface;
 import com.dinotom.project_koff_ma.KoffGlobal;
 import com.dinotom.project_koff_ma.R;
+import com.dinotom.project_koff_ma.pojo.UserPk;
 import com.dinotom.project_koff_ma.pojo.business_entities.BusinessEntityDetails;
 import com.dinotom.project_koff_ma.pojo.business_entities.CommentAndRating;
+import com.dinotom.project_koff_ma.pojo.business_entities.UserCommentAndRating;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +46,8 @@ public class BusinessEntityInfoActivity extends AppCompatActivity implements ICo
 
     Paginate paginate;
 
+    int entityPk;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -48,7 +55,7 @@ public class BusinessEntityInfoActivity extends AppCompatActivity implements ICo
         setContentView(R.layout.businessentity_info);
 
         Intent intent = getIntent();
-        int entityPk = intent.getIntExtra("ENTITY_PK", -1);
+        entityPk = intent.getIntExtra("ENTITY_PK", -1);
         final double entityAvgScore = intent.getDoubleExtra("ENTITY_AVG_SCORE", -1);
         final String entityIsWorking = intent.getStringExtra("ENTITY_WORKING");
 
@@ -125,10 +132,38 @@ public class BusinessEntityInfoActivity extends AppCompatActivity implements ICo
             }
         });
 
+        setupUserCommentAndRatingCall(entityPk);
+        setupCommentsCall();
+    }
+
+    private void setupCommentsCall()
+    {
+        Call<UserPk> userCall = apiInterface.getUserPk();
+
+        userCall.enqueue(new Callback<UserPk>()
+        {
+            @Override
+            public void onResponse(Call<UserPk> call, Response<UserPk> response)
+            {
+                Log.d(TAG, response.body().getUserPk());
+                setupComments(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<UserPk> call, Throwable t)
+            {
+                call.cancel();
+                Toast.makeText(getApplicationContext(), "User Pk fetching unsuccessful!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setupComments(final UserPk userPk)
+    {
         recyclerView = findViewById(R.id.rv_commentsandratings_in_activity);
         recyclerView.setLayoutManager(new LinearLayoutManager(KoffGlobal.getAppContext()));
 
-        commentsAndRatingsAdapter = new CommentsAndRatingsAdapter(KoffGlobal.getAppContext());
+        commentsAndRatingsAdapter = new CommentsAndRatingsAdapter(KoffGlobal.getAppContext(), userPk.getUserPk());
         recyclerView.setAdapter(commentsAndRatingsAdapter);
 
         commentsAndRatingsPresenter = new CommentsAndRatingsPresenter(this, entityPk);
@@ -138,7 +173,50 @@ public class BusinessEntityInfoActivity extends AppCompatActivity implements ICo
                 .setOnLoadMoreListener(commentsAndRatingsPresenter)
                 .setLoadingTriggerThreshold(5) // malo se igrati s ovime
                 .build();
+    }
 
+    private void setupUserCommentAndRatingCall(final Integer businessEntityPk)
+    {
+        Call<UserCommentAndRating> userCommentAndRatingCall = apiInterface.getUserRatingAndComment(businessEntityPk);
+
+        userCommentAndRatingCall.enqueue(new Callback<UserCommentAndRating>()
+        {
+            @Override
+            public void onResponse(Call<UserCommentAndRating> call, Response<UserCommentAndRating> response)
+            {
+                Log.d(TAG, response.body().getUserComment() + " " + response.body().getUserRating());
+                setupUserCommentAndRating(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<UserCommentAndRating> call, Throwable t)
+            {
+                call.cancel();
+                Toast.makeText(getApplicationContext(), "User Comment and Rating fetching unsuccessful!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setupUserCommentAndRating(final UserCommentAndRating userCommentAndRating)
+    {
+        //Button ratingSubmitButton = findViewById(R.id.rating_submit_button);
+        Button ratingDeleteButton = findViewById(R.id.rating_delete_button);
+
+        RatingBar userRatingBar = findViewById(R.id.business_user_rating);
+
+        Button commentButton = findViewById(R.id.comment_button);
+        View commentBottomLine = findViewById(R.id.commentBottomLine);
+
+        if(userCommentAndRating.getUserRating() == -1)
+            ratingDeleteButton.setVisibility(View.GONE);
+        else
+            userRatingBar.setRating(userCommentAndRating.getUserRating());
+
+        if(!userCommentAndRating.getUserComment().isEmpty())
+        {
+            commentButton.setVisibility(View.GONE);
+            commentBottomLine.setVisibility(View.GONE);
+        }
     }
 
     @Override
