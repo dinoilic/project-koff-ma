@@ -20,12 +20,14 @@ import com.dinotom.project_koff_ma.R;
 import com.dinotom.project_koff_ma.pojo.UserPk;
 import com.dinotom.project_koff_ma.pojo.business_entities.BusinessEntityDetails;
 import com.dinotom.project_koff_ma.pojo.business_entities.CommentAndRating;
+import com.dinotom.project_koff_ma.pojo.business_entities.PostCommentAndRating;
 import com.dinotom.project_koff_ma.pojo.business_entities.UserCommentAndRating;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,6 +49,7 @@ public class BusinessEntityInfoActivity extends AppCompatActivity implements ICo
     Paginate paginate;
 
     int entityPk;
+    int commentAndRatingPk = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -134,6 +137,31 @@ public class BusinessEntityInfoActivity extends AppCompatActivity implements ICo
 
         setupUserCommentAndRatingCall(entityPk);
         setupCommentsCall();
+
+        final Button ratingSubmitButton = findViewById(R.id.rating_submit_button);
+        ratingSubmitButton.setOnClickListener(new Button.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Float rating = ((RatingBar)findViewById(R.id.business_user_rating)).getRating();
+                if(commentAndRatingPk == -1)
+                    postCommentAndRatingCall(entityPk, rating.intValue(), "");
+                else
+                    updateCommentAndRatingCall(commentAndRatingPk, rating.intValue(), "");
+            }
+        });
+        ratingSubmitButton.setVisibility(View.GONE);
+
+        final Button ratingDeleteButton = findViewById(R.id.rating_delete_button);
+        ratingDeleteButton.setOnClickListener(new Button.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                deleteCommentAndRatingCall();
+            }
+        });
     }
 
     private void setupCommentsCall()
@@ -184,7 +212,7 @@ public class BusinessEntityInfoActivity extends AppCompatActivity implements ICo
             @Override
             public void onResponse(Call<UserCommentAndRating> call, Response<UserCommentAndRating> response)
             {
-                Log.d(TAG, response.body().getUserComment() + " " + response.body().getUserRating());
+                Log.d(TAG, String.format("setup Comment call: %s %d", response.body().getUserComment(), response.body().getUserRating()));
                 setupUserCommentAndRating(response.body());
             }
 
@@ -199,16 +227,17 @@ public class BusinessEntityInfoActivity extends AppCompatActivity implements ICo
 
     private void setupUserCommentAndRating(final UserCommentAndRating userCommentAndRating)
     {
-        //Button ratingSubmitButton = findViewById(R.id.rating_submit_button);
         Button ratingDeleteButton = findViewById(R.id.rating_delete_button);
-
-        RatingBar userRatingBar = findViewById(R.id.business_user_rating);
+        final RatingBar userRatingBar = findViewById(R.id.business_user_rating);
 
         Button commentButton = findViewById(R.id.comment_button);
         View commentBottomLine = findViewById(R.id.commentBottomLine);
 
         if(userCommentAndRating.getUserRating() == -1)
+        {
             ratingDeleteButton.setVisibility(View.GONE);
+            userRatingBar.setRating(0);
+        }
         else
             userRatingBar.setRating(userCommentAndRating.getUserRating());
 
@@ -217,12 +246,103 @@ public class BusinessEntityInfoActivity extends AppCompatActivity implements ICo
             commentButton.setVisibility(View.GONE);
             commentBottomLine.setVisibility(View.GONE);
         }
+
+        commentAndRatingPk = userCommentAndRating.getPk();
+
+        final Button ratingSubmitButton = findViewById(R.id.rating_submit_button);
+        final float currentRating = userRatingBar.getRating();
+        userRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener()
+        {
+            float defaultRating = currentRating;
+
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b)
+            {
+                if(v != defaultRating)
+                    ratingSubmitButton.setVisibility(View.VISIBLE);
+                else
+                    ratingSubmitButton.setVisibility(View.GONE);
+            }
+        });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    private void postCommentAndRatingCall(Integer entityPk, Integer rating, String comment)
+    {
+        Log.d(TAG, String.format("postCommentAndRatingCall: %d %d %s", entityPk, rating, comment));
+        Call<PostCommentAndRating> postCommentAndRatingCall = apiInterface.postCommentAndRating(entityPk, rating, comment);
+
+        postCommentAndRatingCall.enqueue(new Callback<PostCommentAndRating>()
+        {
+            @Override
+            public void onResponse(Call<PostCommentAndRating> call, Response<PostCommentAndRating> response)
+            {
+                Log.d(TAG, String.format("Response in postCommendAndRatingCall: %d", response.code()));
+                recreate();
+            }
+
+            @Override
+            public void onFailure(Call<PostCommentAndRating> call, Throwable t)
+            {
+                call.cancel();
+                Toast.makeText(getApplicationContext(), "User Comment and Rating posting unsuccessful!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
+    private void updateCommentAndRatingCall(Integer pk, Integer rating, String comment)
+    {
+        Call<ResponseBody> updateCommentAndRatingCall;
+
+        if(rating == -1)
+            updateCommentAndRatingCall = apiInterface.updateComment(pk, comment);
+        else if(comment.isEmpty())
+            updateCommentAndRatingCall = apiInterface.updateRating(pk, rating);
+        else
+            updateCommentAndRatingCall = apiInterface.updateCommentAndRating(pk, rating, comment);
+
+        updateCommentAndRatingCall.enqueue(new Callback<ResponseBody>()
+        {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response)
+            {
+                Log.d(TAG, String.format("Response in updateCommentAndRatingCall: %d", response.code()));
+                recreate();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t)
+            {
+                call.cancel();
+                Toast.makeText(getApplicationContext(), "User Comment and/or Rating updating unsuccessful!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void deleteCommentAndRatingCall()
+    {
+        Call<ResponseBody> deleteCommentAndRatingCall = apiInterface.deleteCommentAndRating(commentAndRatingPk);
+
+        deleteCommentAndRatingCall.enqueue(new Callback<ResponseBody>()
+        {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response)
+            {
+                Log.d(TAG, String.format("Response in deleteCommendAndRatingCall: %d", response.code()));
+                recreate();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t)
+            {
+                call.cancel();
+                Toast.makeText(getApplicationContext(), "User Comment and Rating deleting unsuccessful!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    @Override
+    protected void onStart() { super.onStart(); }
 
     @Override
     public void addItems(List<CommentAndRating> items) { commentsAndRatingsAdapter.addItems(items); }
