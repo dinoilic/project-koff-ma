@@ -3,6 +3,8 @@ package com.dinotom.project_koff_ma.pojo.business_entities;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Objects;
+
 public class DayWorkingHours
 {
     @SerializedName("name")
@@ -25,5 +27,14 @@ public class DayWorkingHours
 
     public String getEndTime() {
         return endTime;
+    }
+
+    public boolean equalsStartEndTime(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DayWorkingHours that = (DayWorkingHours) o;
+        return startTime.equals(that.startTime) &&
+                endTime.equals(that.endTime);
     }
 }

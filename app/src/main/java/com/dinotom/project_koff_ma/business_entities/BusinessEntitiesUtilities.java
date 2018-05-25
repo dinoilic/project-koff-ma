@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.util.Pair;
 
 import com.dinotom.project_koff_ma.KoffGlobal;
 import com.dinotom.project_koff_ma.R;
@@ -16,8 +17,10 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -58,7 +61,8 @@ public class BusinessEntitiesUtilities
             getStringFromStringResources(R.string.businessentity_sortby_za)
     };
 
-    static boolean isWorkingNow(List<DayWorkingHours> workingHours) throws ParseException {
+    static boolean isWorkingNow(List<DayWorkingHours> workingHours) throws ParseException
+    {
         Calendar calendar = Calendar.getInstance();
         Date currentDate = calendar.getTime();
         String currentDayShort = new SimpleDateFormat("EE", Locale.ENGLISH).format(currentDate.getTime());
@@ -87,6 +91,83 @@ public class BusinessEntitiesUtilities
         }
 
         return false;
+    }
+
+    static String parseTime(String time) throws ParseException
+    {
+        Date date = new SimpleDateFormat("HH:mm:ss").parse(time);
+        DateFormat writeFormat = new SimpleDateFormat( "HH");
+        return writeFormat.format(date);
+    }
+
+    static String readableWorkingHours(final List<DayWorkingHours> list) throws ParseException
+    {
+        if(list.size() == 0)
+            return "/";
+        else if (list.size() == 1)
+            return String.format(
+                    "%s: %s-%s",
+                    list.get(0).getDayShortName(),
+                    parseTime(list.get(0).getStartTime()),
+                    parseTime(list.get(0).getEndTime()));
+
+        DayWorkingHours last = list.get(0);
+        String result = "";
+
+        for(int i = 1; i < list.size(); ++i)
+        {
+            if(i == list.size() - 1)
+            {
+                if(last.equalsStartEndTime(list.get(i)))
+                {
+                    result += String.format(
+                            "%s-%s: %s-%s\n",
+                            last.getDayShortName(),
+                            list.get(i).getDayShortName(),
+                            parseTime(last.getStartTime()),
+                            parseTime(last.getEndTime()));
+                }
+            }
+            if(!last.equalsStartEndTime(list.get(i)))
+            {
+                if(i == list.size() - 1)
+                {
+                    result += String.format(
+                            "%s-%s: %s-%s\n",
+                            last.getDayShortName(),
+                            list.get(i-1).getDayShortName(),
+                            parseTime(last.getStartTime()),
+                            parseTime(last.getEndTime()));
+
+                    result += String.format(
+                            "%s: %s-%s\n",
+                            list.get(i).getDayShortName(),
+                            parseTime(list.get(i).getStartTime()),
+                            parseTime(list.get(i).getEndTime()));
+                }
+                else if(last.getDayShortName().equals(list.get(i-1).getDayShortName()))
+                {
+                    result += String.format(
+                            "%s: %s-%s\n",
+                            last.getDayShortName(),
+                            parseTime(last.getStartTime()),
+                            parseTime(last.getEndTime()));
+                    last = list.get(i);
+                }
+                else
+                {
+                    result += String.format(
+                            "%s-%s: %s-%s\n",
+                            last.getDayShortName(),
+                            list.get(i-1).getDayShortName(),
+                            parseTime(last.getStartTime()),
+                            parseTime(last.getEndTime()));
+                    last = list.get(i);
+                }
+            }
+        }
+
+        return result;
     }
 
     static String getStringFromStringResources(int stringID)

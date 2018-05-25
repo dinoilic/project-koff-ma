@@ -30,6 +30,7 @@ import com.dinotom.project_koff_ma.pojo.business_entities.PostCommentAndRating;
 import com.dinotom.project_koff_ma.pojo.business_entities.UserCommentAndRating;
 import com.squareup.otto.Subscribe;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -121,6 +122,13 @@ public class BusinessEntityInfoActivity extends AppCompatActivity implements ICo
                     tvBusinessEntityWorking.setTextColor(getResources().getColor(R.color.openColor));
                 } else if (entityIsWorking.equals(KoffGlobal.getAppContext().getResources().getString(R.string.businessentity_closed))) {
                     tvBusinessEntityWorking.setTextColor(getResources().getColor(R.color.closedColor));
+                }
+
+                TextView tvWorkingHours = findViewById(R.id.workingHoursTextView);
+                try {
+                    tvWorkingHours.setText(BusinessEntitiesUtilities.readableWorkingHours(details.getWorkingHours()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
 
                 List<String> emails = details.geteMail();
