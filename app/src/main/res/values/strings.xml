@@ -29,7 +29,16 @@
     <string name="business_info_confirm_rating">Potvrdi</string>
     <string name="business_info_delete_rating">Izbriši</string>
 
+    <string name="comment_hint">Unesite komentar</string>
+    <string name="comment_apply">Objavi komentar</string>
+
+    <string name="delete_rating_warning">Jeste li sigurni da želite obrisati ocjenu?</string>
+    <string name="delete_comment_warning">Jeste li sigurni da želite obrisati komentar?</string>
+    <string name="delete_rating_and_comment_warning">Jeste li sigurni da želite obrisati ocjenu? Obrisat ćete istovremeno i komentar.</string>
+
     <string name="main_activity_event">MainActivityEvent</string>
+    <string name="comment_edit_event">CommentEditEvent</string>
+    <string name="comment_delete_event">CommentDeleteEvent</string>
 
     <string name="businessentity_distance">Udaljenost</string>
     <string name="businessentity_open">OTVORENO</string>

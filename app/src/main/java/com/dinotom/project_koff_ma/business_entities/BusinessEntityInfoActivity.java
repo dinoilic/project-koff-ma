@@ -1,8 +1,10 @@
 package com.dinotom.project_koff_ma.business_entities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +24,7 @@ import com.dinotom.project_koff_ma.pojo.business_entities.BusinessEntityDetails;
 import com.dinotom.project_koff_ma.pojo.business_entities.CommentAndRating;
 import com.dinotom.project_koff_ma.pojo.business_entities.PostCommentAndRating;
 import com.dinotom.project_koff_ma.pojo.business_entities.UserCommentAndRating;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,9 +40,10 @@ import ru.noties.markwon.Markwon;
 
 public class BusinessEntityInfoActivity extends AppCompatActivity implements ICommentsAndRatingsView
 {
+    private static final String TAG = BusinessEntityInfoActivity.class.getSimpleName();
+    static final int COMMENT_REQUEST = 555;
 
     APIInterface apiInterface;
-    private static final String TAG = BusinessEntityInfoActivity.class.getSimpleName();
 
     RecyclerView recyclerView;
 
@@ -49,7 +53,18 @@ public class BusinessEntityInfoActivity extends AppCompatActivity implements ICo
     Paginate paginate;
 
     int entityPk;
+
     int commentAndRatingPk = -1;
+    String userComment = "";
+
+    boolean ottoRegistered = false;
+
+    private enum DeleteType
+    {
+        DELETE_COMMENT_AND_RATING,
+        DELETE_RATING,
+        DELETE_COMMENT
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -159,9 +174,15 @@ public class BusinessEntityInfoActivity extends AppCompatActivity implements ICo
             @Override
             public void onClick(View view)
             {
-                deleteCommentAndRatingCall();
+                if(userComment.isEmpty())
+                    showDeleteCommentOrRatingDialog(DeleteType.DELETE_RATING);
+                else
+                    showDeleteCommentOrRatingDialog(DeleteType.DELETE_COMMENT_AND_RATING);
             }
         });
+
+        KoffGlobal.bus.register(this); // register Otto bus for event observing
+        ottoRegistered = true;
     }
 
     private void setupCommentsCall()
@@ -236,6 +257,8 @@ public class BusinessEntityInfoActivity extends AppCompatActivity implements ICo
         if(userCommentAndRating.getUserRating() == -1)
         {
             ratingDeleteButton.setVisibility(View.GONE);
+            commentButton.setVisibility(View.GONE);
+            commentBottomLine.setVisibility(View.GONE);
             userRatingBar.setRating(0);
         }
         else
@@ -248,6 +271,7 @@ public class BusinessEntityInfoActivity extends AppCompatActivity implements ICo
         }
 
         commentAndRatingPk = userCommentAndRating.getPk();
+        userComment = userCommentAndRating.getUserComment();
 
         final Button ratingSubmitButton = findViewById(R.id.rating_submit_button);
         final float currentRating = userRatingBar.getRating();
@@ -262,6 +286,16 @@ public class BusinessEntityInfoActivity extends AppCompatActivity implements ICo
                     ratingSubmitButton.setVisibility(View.VISIBLE);
                 else
                     ratingSubmitButton.setVisibility(View.GONE);
+            }
+        });
+
+        commentButton.setOnClickListener(new Button.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(getApplicationContext(), CommentActivity.class);
+                startActivityForResult(intent, COMMENT_REQUEST);
             }
         });
     }
@@ -340,6 +374,82 @@ public class BusinessEntityInfoActivity extends AppCompatActivity implements ICo
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (requestCode == COMMENT_REQUEST)
+        {
+            if (resultCode == RESULT_OK)
+            {
+                String comment = data.getStringExtra("comment");
+                Log.d(TAG, String.format("Received comment: %s", comment));
+
+                if(!comment.equals(userComment))
+                    updateCommentAndRatingCall(commentAndRatingPk, -1, comment);
+            }
+        }
+    }
+
+    @Subscribe
+    public void eventProcessor(String event)
+    {
+        if(event.equals(KoffGlobal.getAppContext().getResources().getString(R.string.comment_edit_event)))
+        {
+            Intent intent = new Intent(getApplicationContext(), CommentActivity.class);
+            intent.putExtra("Comment", userComment);
+            startActivityForResult(intent, COMMENT_REQUEST);
+        }
+        else if(event.equals(KoffGlobal.getAppContext().getResources().getString(R.string.comment_delete_event)))
+        {
+            showDeleteCommentOrRatingDialog(DeleteType.DELETE_COMMENT);
+        }
+    }
+
+    private void showDeleteCommentOrRatingDialog(final DeleteType deleteType)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        int messageId;
+
+        switch(deleteType)
+        {
+            case DELETE_COMMENT_AND_RATING:
+                messageId = R.string.delete_rating_and_comment_warning;
+                break;
+            case DELETE_COMMENT:
+                messageId = R.string.delete_comment_warning;
+                break;
+            case DELETE_RATING:
+                messageId = R.string.delete_rating_warning;
+                break;
+            default:
+                messageId = R.string.delete_rating_and_comment_warning;
+                break;
+        }
+
+        builder.setMessage(messageId);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int id)
+            {
+                switch(deleteType)
+                {
+                    case DELETE_COMMENT:
+                        updateCommentAndRatingCall(commentAndRatingPk, -1, "");
+                        break;
+                    default:
+                        deleteCommentAndRatingCall();
+                        break;
+                }
+            }
+        });
+
+        builder.setNegativeButton("Pa ne baš!", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int id) { }
+        });
+        builder.show();
+    }
 
     @Override
     protected void onStart() { super.onStart(); }
@@ -364,5 +474,21 @@ public class BusinessEntityInfoActivity extends AppCompatActivity implements ICo
     {
         paginate.unbind();
         super.onDestroy();
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if(!ottoRegistered) KoffGlobal.bus.register(this);
+        ottoRegistered = true;
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        if(ottoRegistered) KoffGlobal.bus.unregister(this);
+        ottoRegistered = false;
     }
 }

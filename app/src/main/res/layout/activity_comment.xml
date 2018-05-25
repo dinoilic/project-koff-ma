@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".business_entities.CommentActivity">
+
+    <EditText
+        android:id="@+id/commentInput"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:ems="10"
+        android:gravity="top"
+        android:hint="@string/comment_hint"
+        android:imeOptions="actionDone"
+        android:inputType="textMultiLine"
+        android:maxLength="500"
+        app:layout_constraintBottom_toTopOf="@+id/commentApplyButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/commentApplyButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/comment_apply"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+</android.support.constraint.ConstraintLayout>

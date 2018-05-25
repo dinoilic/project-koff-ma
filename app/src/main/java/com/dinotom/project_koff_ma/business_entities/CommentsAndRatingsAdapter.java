@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.dinotom.project_koff_ma.KoffGlobal;
 import com.dinotom.project_koff_ma.R;
 import com.dinotom.project_koff_ma.pojo.business_entities.CommentAndRating;
 
@@ -54,6 +55,27 @@ public class CommentsAndRatingsAdapter extends RecyclerView.Adapter<CommentsAndR
         {
             holder.editButton.setVisibility(View.GONE);
             holder.deleteButton.setVisibility(View.GONE);
+        }
+
+        if(commentAndRatings.get(position).getUser().get(3).equals(userPk))
+        {
+            holder.editButton.setOnClickListener(new Button.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    KoffGlobal.bus.post(KoffGlobal.getAppContext().getResources().getString(R.string.comment_edit_event));
+                }
+            });
+
+            holder.deleteButton.setOnClickListener(new Button.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    KoffGlobal.bus.post(KoffGlobal.getAppContext().getResources().getString(R.string.comment_delete_event));
+                }
+            });
         }
     }
 
