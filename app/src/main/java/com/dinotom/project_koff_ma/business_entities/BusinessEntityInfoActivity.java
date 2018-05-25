@@ -2,12 +2,16 @@ package com.dinotom.project_koff_ma.business_entities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -85,13 +89,27 @@ public class BusinessEntityInfoActivity extends AppCompatActivity implements ICo
             @Override
             public void onResponse(Call<BusinessEntityDetails> call, Response<BusinessEntityDetails> response)
             {
-                BusinessEntityDetails details = response.body(); // Category pojo is fetched
+                final BusinessEntityDetails details = response.body();
 
                 TextView tv = findViewById(R.id.entityName);
                 tv.setText(details.getName());
 
                 TextView tvAddress = findViewById(R.id.entityAddress);
-                tvAddress.setText(details.getAddress());
+                tvAddress.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        String location = String.format("%f,%f", details.getLocation().get(0), details.getLocation().get(1));
+                        String addressUri = String.format("geo:%s?q=%s(%s)", location, location, details.getName());
+                        Intent showLocation = new Intent(Intent.ACTION_VIEW, Uri.parse(addressUri));
+                        startActivity(showLocation);
+                    }
+                });
+                SpannableString stylizedAddress = new SpannableString(details.getAddress());
+                stylizedAddress.setSpan(new UnderlineSpan(), 0,stylizedAddress.length(), 0);
+                stylizedAddress.setSpan(new ForegroundColorSpan(0x990000FF), 0, stylizedAddress.length(), 0);
+                tvAddress.setText(stylizedAddress);
 
                 RatingBar rtBusinessEntity = findViewById(R.id.bedetails_avgrating);
                 rtBusinessEntity.setRating((float) entityAvgScore);
