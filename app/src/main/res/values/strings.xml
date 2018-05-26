@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">project-koff-ma</string>
+    <string name="app_name">Koff</string>
 
     <string name="user_accounts_file">com.dinotom.project_koff_ma.USER_ACCOUNTS_FILE</string>
     <string name="user_token_key">com.dinotom.project_koff_ma.USER_TOKEN</string>

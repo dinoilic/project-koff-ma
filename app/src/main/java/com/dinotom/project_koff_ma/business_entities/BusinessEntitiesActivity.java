@@ -17,8 +17,12 @@ import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SearchView;
 
 import com.dinotom.project_koff_ma.KoffGlobal;
 import com.dinotom.project_koff_ma.R;
@@ -49,6 +53,28 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
     SharedPreferences.OnSharedPreferenceChangeListener listener;
 
     //FusedLocationProviderClient mFusedLocationClient;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search, menu);
+        MenuItem item = menu.findItem(R.id.menuSearch);
+        SearchView searchView = (SearchView)item.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -114,6 +140,8 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
         setSupportActionBar(myAppBar);
 
         getSupportActionBar().setTitle(subcategoryName);*/
+
+
     }
 
     private void showSortDialog()

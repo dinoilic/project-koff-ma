@@ -21,6 +21,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".business_entities.BusinessEntitiesActivity" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
@@ -29,7 +31,6 @@
             android:value="***REMOVED***" />
 
         <activity android:name=".SubcategoryActivity" />
-        <activity android:name=".business_entities.BusinessEntitiesActivity" />
         <activity android:name=".business_entities.FilterSettingsActivity" />
         <activity android:name=".business_entities.BusinessEntityInfoActivity" />
         <activity android:name=".business_entities.CommentActivity"
