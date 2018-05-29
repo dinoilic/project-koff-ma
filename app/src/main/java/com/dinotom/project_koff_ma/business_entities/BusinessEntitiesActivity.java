@@ -1,6 +1,7 @@
 package com.dinotom.project_koff_ma.business_entities;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -23,17 +24,29 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SearchView;
+import android.widget.Toast;
 
+import com.dinotom.project_koff_ma.APIClient;
+import com.dinotom.project_koff_ma.APIInterface;
+import com.dinotom.project_koff_ma.CategoryAdapter;
 import com.dinotom.project_koff_ma.KoffGlobal;
 import com.dinotom.project_koff_ma.R;
 import com.dinotom.project_koff_ma.pojo.business_entities.BusinessEntity;
 import com.dinotom.project_koff_ma.pojo.business_entities.DayWorkingHours;
+import com.dinotom.project_koff_ma.pojo.category.Category;
+import com.dinotom.project_koff_ma.pojo.category.Result;
+import com.dinotom.project_koff_ma.pojo.search.SearchPage;
+import com.dinotom.project_koff_ma.pojo.search.SearchResult;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import ru.alexbykov.nopaginate.paginate.Paginate;
 import ru.alexbykov.nopaginate.paginate.PaginateBuilder;
 
@@ -54,16 +67,64 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
 
     //FusedLocationProviderClient mFusedLocationClient;
 
+    APIInterface apiInterface;
+    ArrayList<Integer> searchResultList;
+
+    Integer subcategoryPk;
+
+    private void getSearchResults(String searchQuery, final IBusinessEntitiesView view) {
+        Call<SearchPage> categoryCall = apiInterface.getSearchPage(searchQuery);
+        categoryCall.enqueue(new Callback<SearchPage>()
+        {
+            @Override
+            public void onResponse(Call<SearchPage> call, Response<SearchPage> response)
+            {
+                SearchPage mainSearchPage = response.body();
+
+                searchResultList = new ArrayList<Integer>();
+                for (SearchResult searchResult:
+                        mainSearchPage.getResults()) {
+                    searchResultList.add(searchResult.getId());
+                }
+
+                Context context = KoffGlobal.getAppContext();
+                String fieldName = context.getResources().getString(R.string.business_activities_search_ids);
+                String sharedPreferencesFile = KoffGlobal.getAppContext().getResources().getString(R.string.business_activities_file);
+
+                SharedPreferences sharedPref = context.getSharedPreferences(sharedPreferencesFile, Context.MODE_PRIVATE);
+                String searchIds = sharedPref.getString(fieldName, ""); // get the token or if it's not there, return empty string
+
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString(fieldName, "26");
+                editor.commit(); // use "apply" if we want asynchronous later
+
+
+                // pretvoriti u jedan string
+            }
+
+            @Override
+            public void onFailure(Call<SearchPage> call, Throwable t)
+            {
+                call.cancel();
+                Toast.makeText(getApplicationContext(), "Ne radi search!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_search, menu);
         MenuItem item = menu.findItem(R.id.menuSearch);
         SearchView searchView = (SearchView)item.getActionView();
+        final IBusinessEntitiesView view = this;
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
+                getSearchResults(s, view);
+
                 return false;
             }
 
@@ -80,6 +141,7 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        apiInterface = APIClient.getClient().create(APIInterface.class);
         setContentView(R.layout.activity_businessentitites);
 
         overridePendingTransition(R.anim.enter_activity_1, R.anim.enter_activity_2);
@@ -91,10 +153,10 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
         recyclerView.setAdapter(businessEntitiesAdapter);
 
         Intent intent = getIntent();
-        Integer subcategoryPk = intent.getIntExtra("SUBCATEGORY_PK", 0);
+        subcategoryPk = intent.getIntExtra("SUBCATEGORY_PK", 0);
         String subcategoryName = intent.getStringExtra("SUBCATEGORY_NAME");
 
-        businessEntitiesPresenter = new BusinessEntitiesPresenter(this, subcategoryPk);
+        businessEntitiesPresenter = new BusinessEntitiesPresenter(this, subcategoryPk, null);
 
         paginate = new PaginateBuilder()
                 .with(recyclerView)

@@ -12,6 +12,7 @@ import com.dinotom.project_koff_ma.pojo.category.Category;
 import com.dinotom.project_koff_ma.pojo.category.Result;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,15 +25,17 @@ public class BusinessEntitiesPresenter implements OnLoadMoreListener
 
     private IBusinessEntitiesView view;
     private APIInterface apiInterface;
+    private String ids;
 
     private Integer SubcategoryPk;
     private Integer currentPage;
 
-    public BusinessEntitiesPresenter(IBusinessEntitiesView view, Integer SubcategoryPk)
+    public BusinessEntitiesPresenter(IBusinessEntitiesView view, Integer SubcategoryPk, String ids)
     {
         this.view = view;
         this.currentPage = 1;
         this.SubcategoryPk = SubcategoryPk;
+        this.ids = ids;
         this.apiInterface = APIClient.getClient().create(APIInterface.class);
     }
 
@@ -42,14 +45,29 @@ public class BusinessEntitiesPresenter implements OnLoadMoreListener
         view.showPaginateError(false);
         view.showPaginateLoading(true);
 
-        Call<BusinessEntityPage> businessEntityPageCall = apiInterface.getBusinessEntities(
-                SubcategoryPk,
-                BusinessEntitiesUtilities.getLocation(),
-                BusinessEntitiesUtilities.getRadius().doubleValue(),
-                BusinessEntitiesUtilities.getIsWorking(),
-                BusinessEntitiesUtilities.getSortMode(),
-                currentPage
-        );
+        Call<BusinessEntityPage> businessEntityPageCall;
+
+        if(ids != null) {
+            businessEntityPageCall = apiInterface.getBusinessEntities(
+                    SubcategoryPk,
+                    BusinessEntitiesUtilities.getLocation(),
+                    BusinessEntitiesUtilities.getRadius().doubleValue(),
+                    BusinessEntitiesUtilities.getIsWorking(),
+                    BusinessEntitiesUtilities.getSortMode(),
+                    currentPage,
+                    ids
+            );
+        } else {
+            businessEntityPageCall = apiInterface.getBusinessEntities(
+                    SubcategoryPk,
+                    BusinessEntitiesUtilities.getLocation(),
+                    BusinessEntitiesUtilities.getRadius().doubleValue(),
+                    BusinessEntitiesUtilities.getIsWorking(),
+                    BusinessEntitiesUtilities.getSortMode(),
+                    currentPage
+            );
+        }
+
         businessEntityPageCall.enqueue(new Callback<BusinessEntityPage>()
         {
             @Override

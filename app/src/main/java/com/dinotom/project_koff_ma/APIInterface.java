@@ -10,6 +10,7 @@ import com.dinotom.project_koff_ma.pojo.business_entities.PostCommentAndRating;
 import com.dinotom.project_koff_ma.pojo.business_entities.UserCommentAndRating;
 import com.dinotom.project_koff_ma.pojo.category.Category;
 import com.dinotom.project_koff_ma.pojo.UserToken;
+import com.dinotom.project_koff_ma.pojo.search.SearchPage;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -47,6 +48,15 @@ public interface APIInterface
                                                  @Query("sort") String sort_mode,
                                                  @Query("page") Integer page);
 
+    @GET("api/v1/entities/")
+    Call<BusinessEntityPage> getBusinessEntities(@Query("subcategory") Integer pk,
+                                                 @Query("location") String location,
+                                                 @Query("radius") Double radius,
+                                                 @Query("is_working") Integer is_working,
+                                                 @Query("sort") String sort_mode,
+                                                 @Query("page") Integer page,
+                                                 @Query("ids") String ids);
+
     @GET("api/v1/entities/{id}/")
     Call<BusinessEntityDetails> getBusinessEntityDetails(@Path("id") Integer id);
 
@@ -79,4 +89,7 @@ public interface APIInterface
 
     @DELETE("api/v1/ratings-and-comments/{pk}/")
     Call<ResponseBody> deleteCommentAndRating(@Path("pk") Integer pk);
+
+    @GET("api/v1/entities/search/")
+    Call<SearchPage> getSearchPage(@Query("description") String description);
 }
