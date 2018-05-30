@@ -37,6 +37,16 @@ public class SubcategoryActivity extends AppCompatActivity
         Toolbar subcategoryListToolbar = (Toolbar) findViewById(R.id.subcategory_appbar);
         subcategoryListToolbar.setTitle(categoryName);
         setSupportActionBar(subcategoryListToolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp()
+    {
+        onBackPressed();
+        return true;
     }
 
     @Override

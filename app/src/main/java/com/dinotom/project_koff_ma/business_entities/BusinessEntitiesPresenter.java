@@ -47,25 +47,39 @@ public class BusinessEntitiesPresenter implements OnLoadMoreListener
 
         Call<BusinessEntityPage> businessEntityPageCall;
 
-        if(ids != null) {
-            businessEntityPageCall = apiInterface.getBusinessEntities(
-                    SubcategoryPk,
-                    BusinessEntitiesUtilities.getLocation(),
-                    BusinessEntitiesUtilities.getRadius().doubleValue(),
-                    BusinessEntitiesUtilities.getIsWorking(),
-                    BusinessEntitiesUtilities.getSortMode(),
-                    currentPage,
-                    ids
-            );
+        if(ids != null)
+        {
+            if(SubcategoryPk == -1)
+            {
+                businessEntityPageCall = apiInterface.getBusinessEntities(
+                        BusinessEntitiesUtilities.getLocation(),
+                        BusinessEntitiesUtilities.getRadius().doubleValue(),
+                        BusinessEntitiesUtilities.getIsWorking(),
+                        BusinessEntitiesUtilities.getSortMode(),
+                        currentPage,
+                        ids);
+            }
+            else
+            {
+                businessEntityPageCall = apiInterface.getBusinessEntities(
+                        SubcategoryPk,
+                        BusinessEntitiesUtilities.getLocation(),
+                        BusinessEntitiesUtilities.getRadius().doubleValue(),
+                        BusinessEntitiesUtilities.getIsWorking(),
+                        BusinessEntitiesUtilities.getSortMode(),
+                        currentPage,
+                        ids);
+            }
         } else {
-            businessEntityPageCall = apiInterface.getBusinessEntities(
-                    SubcategoryPk,
-                    BusinessEntitiesUtilities.getLocation(),
-                    BusinessEntitiesUtilities.getRadius().doubleValue(),
-                    BusinessEntitiesUtilities.getIsWorking(),
-                    BusinessEntitiesUtilities.getSortMode(),
-                    currentPage
-            );
+
+                businessEntityPageCall = apiInterface.getBusinessEntities(
+                        SubcategoryPk,
+                        BusinessEntitiesUtilities.getLocation(),
+                        BusinessEntitiesUtilities.getRadius().doubleValue(),
+                        BusinessEntitiesUtilities.getIsWorking(),
+                        BusinessEntitiesUtilities.getSortMode(),
+                        currentPage
+                );
         }
 
         businessEntityPageCall.enqueue(new Callback<BusinessEntityPage>()

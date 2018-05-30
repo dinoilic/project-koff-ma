@@ -235,6 +235,14 @@ public class BusinessEntitiesUtilities
         return sharedPrefs.getString(searchTermSetting, "");
     }
 
+    static String getIds()
+    {
+        SharedPreferences sharedPrefs = getSharedPrefs(R.string.temporary_file);
+        String searchIds = getFromStringResources(R.string.business_activities_search_ids);
+
+        return sharedPrefs.getString(searchIds, "");
+    }
+
     static void setStringSetting (int parameterID, String parameter, Integer fileID)
     {
         SharedPreferences.Editor editor = getSharedPrefs(fileID).edit();

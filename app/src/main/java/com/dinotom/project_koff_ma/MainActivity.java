@@ -1,6 +1,7 @@
 package com.dinotom.project_koff_ma;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -10,11 +11,18 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.dinotom.project_koff_ma.business_entities.BusinessEntitiesActivity;
+import com.dinotom.project_koff_ma.business_entities.BusinessEntitiesUtilities;
+import com.dinotom.project_koff_ma.business_entities.BusinessEntityInfoActivity;
+import com.dinotom.project_koff_ma.business_entities.IBusinessEntitiesView;
 import com.dinotom.project_koff_ma.pojo.category.Category;
 import com.dinotom.project_koff_ma.pojo.category.Result;
 import com.squareup.otto.Bus;
@@ -49,6 +57,8 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        overridePendingTransition(R.anim.enter_activity_1, R.anim.enter_activity_2);
 
         recyclerView = (RecyclerView) findViewById(R.id.rv_main);
         recyclerView.setLayoutManager(new GridLayoutManager(KoffGlobal.getAppContext(), 3));
@@ -142,26 +152,36 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    /*
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case KOFF_COARSE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search, menu);
+        MenuItem item = menu.findItem(R.id.menuSearch);
+        final SearchView searchView = (SearchView)item.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+        {
+            @Override
+            public boolean onQueryTextSubmit(String searchTerm)
+            {
+                Intent intent = new Intent(getBaseContext(), BusinessEntitiesActivity.class);
+                intent.putExtra("SEARCH_TERM_FROM_OUTSIDE", searchTerm);
+                getBaseContext().startActivity(intent);
+
+                searchView.setIconified(true);
+                searchView.clearFocus();
+
+                return false;
             }
 
-            // other 'case' lines to check for other
-            // permissions this app might request.
-        }
-    }*/
+            @Override
+            public boolean onQueryTextChange(String s)
+            {
+                return false;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
+    }
 }

@@ -57,6 +57,14 @@ public interface APIInterface
                                                  @Query("page") Integer page,
                                                  @Query("ids") String ids);
 
+    @GET("api/v1/entities/")
+    Call<BusinessEntityPage> getBusinessEntities(@Query("location") String location,
+                                                 @Query("radius") Double radius,
+                                                 @Query("is_working") Integer is_working,
+                                                 @Query("sort") String sort_mode,
+                                                 @Query("page") Integer page,
+                                                 @Query("ids") String ids);
+
     @GET("api/v1/entities/{id}/")
     Call<BusinessEntityDetails> getBusinessEntityDetails(@Path("id") Integer id);
 
