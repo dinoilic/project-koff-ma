@@ -80,26 +80,29 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
             public void onResponse(Call<SearchPage> call, Response<SearchPage> response)
             {
                 SearchPage mainSearchPage = response.body();
+                String searchIds = "";
 
-                searchResultList = new ArrayList<Integer>();
-                for (SearchResult searchResult:
-                        mainSearchPage.getResults()) {
-                    searchResultList.add(searchResult.getId());
+                for(int i = 0; i < mainSearchPage.getResults().size(); ++i)
+                {
+                    if(i == 0)
+                        searchIds = searchIds.concat(mainSearchPage.getResults().get(0).getId().toString());
+                    else
+                    {
+                        searchIds = searchIds.concat(String.format(",%s", mainSearchPage.getResults().get(i).getId().toString()));
+                    }
                 }
+
+                Log.d(TAG, String.format("searchIds: %s", searchIds));
 
                 Context context = KoffGlobal.getAppContext();
                 String fieldName = context.getResources().getString(R.string.business_activities_search_ids);
-                String sharedPreferencesFile = KoffGlobal.getAppContext().getResources().getString(R.string.business_activities_file);
+                String sharedPreferencesFile = KoffGlobal.getAppContext().getResources().getString(R.string.temporary_file);
 
                 SharedPreferences sharedPref = context.getSharedPreferences(sharedPreferencesFile, Context.MODE_PRIVATE);
-                String searchIds = sharedPref.getString(fieldName, ""); // get the token or if it's not there, return empty string
-
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString(fieldName, "26");
+                editor.putString(fieldName, searchIds);
                 editor.commit(); // use "apply" if we want asynchronous later
-
-
-                // pretvoriti u jedan string
+                recreate();
             }
 
             @Override
@@ -113,18 +116,20 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_search, menu);
         MenuItem item = menu.findItem(R.id.menuSearch);
         SearchView searchView = (SearchView)item.getActionView();
         final IBusinessEntitiesView view = this;
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+        {
             @Override
-            public boolean onQueryTextSubmit(String s) {
+            public boolean onQueryTextSubmit(String s)
+            {
                 getSearchResults(s, view);
-
                 return false;
             }
 
@@ -156,7 +161,24 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
         subcategoryPk = intent.getIntExtra("SUBCATEGORY_PK", 0);
         String subcategoryName = intent.getStringExtra("SUBCATEGORY_NAME");
 
-        businessEntitiesPresenter = new BusinessEntitiesPresenter(this, subcategoryPk, null);
+        String preferenceFileName = getBaseContext().getResources().getString(R.string.temporary_file);
+        String searchIdsKey = getBaseContext().getResources().getString(R.string.business_activities_search_ids);
+        SharedPreferences sharedPref = getBaseContext().getSharedPreferences(preferenceFileName, Context.MODE_PRIVATE);
+        String searchIds = sharedPref.getString(searchIdsKey, "");
+
+        Log.d(TAG, String.format("searchIds: %s", searchIds));
+
+        if(searchIds.isEmpty())
+            businessEntitiesPresenter = new BusinessEntitiesPresenter(this, subcategoryPk, null);
+        else
+        {
+            businessEntitiesPresenter = new BusinessEntitiesPresenter(this, subcategoryPk, searchIds);
+            SharedPreferences.Editor editor = sharedPref.edit();
+
+            // STAVITI U ON ACTIVITY EXIT ILI TAKO NEŠTO
+            editor.putString(searchIdsKey, "");
+            editor.commit();
+        }
 
         paginate = new PaginateBuilder()
                 .with(recyclerView)
