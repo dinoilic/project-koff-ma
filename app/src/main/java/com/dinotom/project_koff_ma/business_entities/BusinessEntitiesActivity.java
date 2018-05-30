@@ -142,6 +142,7 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
 
         apiInterface = APIClient.getClient().create(APIInterface.class);
         overridePendingTransition(R.anim.enter_activity_1, R.anim.enter_activity_2);
+        setContentView(R.layout.activity_businessentitites);
 
         String searchIds = BusinessEntitiesUtilities.getIds();
 
@@ -157,8 +158,6 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
             getSearchResults(searchTermFromOutside);
             return;
         }
-
-        setContentView(R.layout.activity_businessentitites);
 
         recyclerView = (RecyclerView) findViewById(R.id.rv_businessentities);
         recyclerView.setLayoutManager(new LinearLayoutManager(KoffGlobal.getAppContext()));

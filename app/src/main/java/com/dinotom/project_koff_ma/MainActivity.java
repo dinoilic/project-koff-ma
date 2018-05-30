@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.SearchView;
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity
     CategoryAdapter categoryAdapter;
 
     List<Result> categoryList;
+
+    SearchView searchView;
 
     boolean ottoRegistered = false;
 
@@ -102,6 +105,14 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         if(!ottoRegistered) KoffGlobal.bus.register(this);
         ottoRegistered = true;
+
+        /*if(searchView != null)
+        {
+            searchView.setFocusableInTouchMode(false);
+            searchView.setFocusable(false);
+            searchView.setFocusableInTouchMode(true);
+            searchView.setFocusable(true);
+        }*/
     }
 
     @Override
@@ -158,7 +169,7 @@ public class MainActivity extends AppCompatActivity
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_search, menu);
         MenuItem item = menu.findItem(R.id.menuSearch);
-        final SearchView searchView = (SearchView)item.getActionView();
+        searchView = (SearchView)item.getActionView();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
         {
@@ -168,9 +179,6 @@ public class MainActivity extends AppCompatActivity
                 Intent intent = new Intent(getBaseContext(), BusinessEntitiesActivity.class);
                 intent.putExtra("SEARCH_TERM_FROM_OUTSIDE", searchTerm);
                 getBaseContext().startActivity(intent);
-
-                searchView.setIconified(true);
-                searchView.clearFocus();
 
                 return false;
             }
