@@ -27,7 +27,9 @@
 
     <string name="business_activities_filter_location_is_custom">com.dinotom.project_koff_ma.BUSINESS_ACTIVITIES_FILTER_LOCATION_IS_CUSTOM</string>
 
+    <string name="business_activities_search_term">com.dinotom.project_koff_ma.BUSINESS_ACTIVITIES_SEARCH_TERM</string>
     <string name="business_activities_search_ids">com.dinotom.project_koff_ma.BUSINESS_ACTIVITIES_SEARCH_IDS</string>
+    <string name="business_activities_no_results">Nema rezultata za traženi pojam!</string>
 
     <string name="business_info_confirm_rating">Potvrdi</string>
     <string name="business_info_delete_rating">Izbriši</string>
@@ -44,8 +46,8 @@
     <string name="comment_delete_event">CommentDeleteEvent</string>
 
     <string name="businessentity_distance">Udaljenost</string>
-    <string name="businessentity_open">OTVORENO</string>
-    <string name="businessentity_closed">ZATVORENO</string>
+    <string name="businessentity_open">RADI</string>
+    <string name="businessentity_closed">NE RADI</string>
 
     <string name="businessentity_sort_dialog_title">Sort</string>
     <string name="businessentity_sortby_distance">Udaljenost</string>
@@ -55,7 +57,4 @@
     <string name="businessentity_sortby_za">Z-A</string>
 
     <string name="businessentity_filter_dialog_title">Filter</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

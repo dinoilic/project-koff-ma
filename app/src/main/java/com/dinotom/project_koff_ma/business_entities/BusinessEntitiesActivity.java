@@ -1,20 +1,15 @@
 package com.dinotom.project_koff_ma.business_entities;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.support.v4.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.util.Log;
@@ -24,22 +19,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dinotom.project_koff_ma.APIClient;
 import com.dinotom.project_koff_ma.APIInterface;
-import com.dinotom.project_koff_ma.CategoryAdapter;
 import com.dinotom.project_koff_ma.KoffGlobal;
 import com.dinotom.project_koff_ma.R;
 import com.dinotom.project_koff_ma.pojo.business_entities.BusinessEntity;
-import com.dinotom.project_koff_ma.pojo.business_entities.DayWorkingHours;
-import com.dinotom.project_koff_ma.pojo.category.Category;
-import com.dinotom.project_koff_ma.pojo.category.Result;
 import com.dinotom.project_koff_ma.pojo.search.SearchPage;
-import com.dinotom.project_koff_ma.pojo.search.SearchResult;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +68,7 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
             public void onResponse(Call<SearchPage> call, Response<SearchPage> response)
             {
                 SearchPage mainSearchPage = response.body();
-                String searchIds = "";
+                String searchIds = mainSearchPage.getResults().size() == 0 ? "NO_RESULTS" : "";
 
                 for(int i = 0; i < mainSearchPage.getResults().size(); ++i)
                 {
@@ -124,12 +112,26 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
         SearchView searchView = (SearchView)item.getActionView();
         final IBusinessEntitiesView view = this;
 
+        String searchTerm = BusinessEntitiesUtilities.getSearchTerm();
+
+        if(!searchTerm.isEmpty())
+        {
+            searchView.setIconified(false);
+            searchView.clearFocus();
+            searchView.setQuery(searchTerm, false);
+        }
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
         {
             @Override
-            public boolean onQueryTextSubmit(String s)
+            public boolean onQueryTextSubmit(String searchTerm)
             {
-                getSearchResults(s, view);
+                BusinessEntitiesUtilities.setStringSetting(
+                        R.string.business_activities_search_term,
+                        searchTerm,
+                        R.string.temporary_file
+                );
+                getSearchResults(searchTerm, view);
                 return false;
             }
 
@@ -168,23 +170,24 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
 
         Log.d(TAG, String.format("searchIds: %s", searchIds));
 
-        if(searchIds.isEmpty())
+        if(searchIds.equals("NO_RESULTS"))
+            businessEntitiesPresenter = null;
+        else if(searchIds.isEmpty())
             businessEntitiesPresenter = new BusinessEntitiesPresenter(this, subcategoryPk, null);
         else
-        {
             businessEntitiesPresenter = new BusinessEntitiesPresenter(this, subcategoryPk, searchIds);
-            SharedPreferences.Editor editor = sharedPref.edit();
 
-            // STAVITI U ON ACTIVITY EXIT ILI TAKO NEŠTO
-            editor.putString(searchIdsKey, "");
-            editor.commit();
+        if(businessEntitiesPresenter != null)
+        {
+            TextView noResultsTextView = findViewById(R.id.no_results_textview);
+            noResultsTextView.setVisibility(View.GONE);
+
+            paginate = new PaginateBuilder()
+                    .with(recyclerView)
+                    .setOnLoadMoreListener(businessEntitiesPresenter)
+                    .setLoadingTriggerThreshold(5) // malo se igrati s ovime
+                    .build();
         }
-
-        paginate = new PaginateBuilder()
-                .with(recyclerView)
-                .setOnLoadMoreListener(businessEntitiesPresenter)
-                .setLoadingTriggerThreshold(5) // malo se igrati s ovime
-                .build();
 
         Button sortButton = (Button) findViewById(R.id.sort_button);
         sortButton.setOnClickListener( new View.OnClickListener()
@@ -206,7 +209,7 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
             }
         });
 
-        preferences = BusinessEntitiesUtilities.getSharedPrefs();
+        preferences = BusinessEntitiesUtilities.getSharedPrefs(R.string.business_activities_file);
         listener =
                 new SharedPreferences.OnSharedPreferenceChangeListener()
                 {
@@ -217,21 +220,17 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
                     }
                 };
         preferences.registerOnSharedPreferenceChangeListener(listener);
-
         BusinessEntitiesUtilities.getLastLocation(getBaseContext(), this);
 
-       /* Toolbar myAppBar = (Toolbar) findViewById(R.id.businessentity_appbar);
-        setSupportActionBar(myAppBar);
-
-        getSupportActionBar().setTitle(subcategoryName);*/
-
-
+        Toolbar businessEntitiesListToolbar = (Toolbar) findViewById(R.id.business_entities_list_appbar);
+        businessEntitiesListToolbar.setTitle(subcategoryName);
+        setSupportActionBar(businessEntitiesListToolbar);
     }
 
     private void showSortDialog()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        String title = BusinessEntitiesUtilities.getStringFromStringResources(R.string.businessentity_sort_dialog_title);
+        String title = BusinessEntitiesUtilities.getFromStringResources(R.string.businessentity_sort_dialog_title);
 
         CharSequence[] currentSortModeNames = BusinessEntitiesUtilities.SortModeNames.clone();
         final BusinessEntitiesUtilities.SortMode[] sortModeEnumValues = BusinessEntitiesUtilities.SortMode.values();
@@ -254,7 +253,8 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
             {
                 BusinessEntitiesUtilities.setStringSetting(
                         R.string.business_activities_sort_mode,
-                        sortModeEnumValues[which].toString()
+                        sortModeEnumValues[which].toString(),
+                        R.string.business_activities_file
                 );
                 recreate();
             }
@@ -272,7 +272,8 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
     {
         BusinessEntitiesUtilities.setStringSetting(
                 R.string.business_activities_sort_mode,
-                BusinessEntitiesUtilities.SortMode.DISTANCE.toString()
+                BusinessEntitiesUtilities.SortMode.DISTANCE.toString(),
+                R.string.business_activities_file
         );
     }
 
@@ -281,6 +282,20 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
     {
         super.onBackPressed();
         overridePendingTransition(R.anim.exit_activity_1, R.anim.exit_activity_2);
+
+        // Reset search results
+        BusinessEntitiesUtilities.setStringSetting(
+                R.string.business_activities_search_ids,
+                "",
+                R.string.temporary_file
+        );
+
+        // Reset search term
+        BusinessEntitiesUtilities.setStringSetting(
+                R.string.business_activities_search_term,
+                "",
+                R.string.temporary_file
+        );
     }
 
     @Override
@@ -311,8 +326,11 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
     }
 
     @Override
-    public void onDestroy() {
-        paginate.unbind();
+    public void onDestroy()
+    {
+        if(paginate != null)
+            paginate.unbind();
+
         super.onDestroy();
     }
 }

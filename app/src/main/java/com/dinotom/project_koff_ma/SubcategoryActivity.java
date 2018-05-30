@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 
 import com.dinotom.project_koff_ma.pojo.category.Child;
 
@@ -32,6 +33,10 @@ public class SubcategoryActivity extends AppCompatActivity
 
         subcategoryAdapter = new SubcategoryAdapter(getApplicationContext(), categoryChildren);
         recyclerView.setAdapter(subcategoryAdapter);
+
+        Toolbar subcategoryListToolbar = (Toolbar) findViewById(R.id.subcategory_appbar);
+        subcategoryListToolbar.setTitle(categoryName);
+        setSupportActionBar(subcategoryListToolbar);
     }
 
     @Override

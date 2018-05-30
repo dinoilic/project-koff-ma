@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.util.Pair;
 
 import com.dinotom.project_koff_ma.KoffGlobal;
 import com.dinotom.project_koff_ma.R;
@@ -20,7 +19,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -54,11 +52,11 @@ public class BusinessEntitiesUtilities
 
     // Pretvoriti u array Stringova, ali u xml-u
     static CharSequence SortModeNames[] = new CharSequence[]{
-            getStringFromStringResources(R.string.businessentity_sortby_distance),
-            getStringFromStringResources(R.string.businessentity_sortby_rating_desc),
-            getStringFromStringResources(R.string.businessentity_sortby_rating_asc),
-            getStringFromStringResources(R.string.businessentity_sortby_az),
-            getStringFromStringResources(R.string.businessentity_sortby_za)
+            getFromStringResources(R.string.businessentity_sortby_distance),
+            getFromStringResources(R.string.businessentity_sortby_rating_desc),
+            getFromStringResources(R.string.businessentity_sortby_rating_asc),
+            getFromStringResources(R.string.businessentity_sortby_az),
+            getFromStringResources(R.string.businessentity_sortby_za)
     };
 
     static boolean isWorkingNow(List<DayWorkingHours> workingHours) throws ParseException
@@ -170,15 +168,15 @@ public class BusinessEntitiesUtilities
         return result;
     }
 
-    static String getStringFromStringResources(int stringID)
+    static String getFromStringResources(int stringID)
     {
         return KoffGlobal.getAppContext().getResources().getString(stringID);
     }
 
-    static SharedPreferences getSharedPrefs()
+    static SharedPreferences getSharedPrefs(Integer fileID)
     {
         Context context = KoffGlobal.getAppContext();
-        String preferenceFileName = context.getResources().getString(R.string.business_activities_file); // name of preference file
+        String preferenceFileName = context.getResources().getString(fileID); // name of preference file
         SharedPreferences sharedPref = context.getSharedPreferences(preferenceFileName, Context.MODE_PRIVATE);
 
         return sharedPref;
@@ -186,7 +184,7 @@ public class BusinessEntitiesUtilities
 
     static String getSortMode()
     {
-        SharedPreferences sharedPrefs = getSharedPrefs();
+        SharedPreferences sharedPrefs = getSharedPrefs(R.string.business_activities_file);
         String sortModeSetting = KoffGlobal.getAppContext().getResources().getString(R.string.business_activities_sort_mode);
         String sortMode = sharedPrefs.getString(sortModeSetting, SortMode.DISTANCE.toString());
 
@@ -195,7 +193,7 @@ public class BusinessEntitiesUtilities
 
     static int getIsWorking()
     {
-        SharedPreferences sharedPrefs = getSharedPrefs();
+        SharedPreferences sharedPrefs = getSharedPrefs(R.string.business_activities_file);
         String isWorkingSetting = KoffGlobal.getAppContext().getResources().getString(R.string.business_activities_filter_isworking);
         boolean isWorking = sharedPrefs.getBoolean(isWorkingSetting, false);
 
@@ -204,7 +202,7 @@ public class BusinessEntitiesUtilities
 
     static Integer getRadius()
     {
-        SharedPreferences sharedPrefs = getSharedPrefs();
+        SharedPreferences sharedPrefs = getSharedPrefs(R.string.business_activities_file);
         String radiusSetting = KoffGlobal.getAppContext().getResources().getString(R.string.business_activities_filter_radius);
         int radius = sharedPrefs.getInt(radiusSetting, 10);
 
@@ -213,7 +211,7 @@ public class BusinessEntitiesUtilities
 
     static String getLocation()
     {
-        SharedPreferences sharedPrefs = getSharedPrefs();
+        SharedPreferences sharedPrefs = getSharedPrefs(R.string.business_activities_file);
         String locationSetting = KoffGlobal.getAppContext().getResources().getString(R.string.business_activities_filter_location);
         String location = sharedPrefs.getString(locationSetting, "45.350127,14.407801");
 
@@ -222,40 +220,48 @@ public class BusinessEntitiesUtilities
 
     static Boolean getIsCustomLocation()
     {
-        SharedPreferences sharedPrefs = getSharedPrefs();
-        String isCustomLocationSetting = getStringFromStringResources(R.string.business_activities_filter_location_is_custom);
+        SharedPreferences sharedPrefs = getSharedPrefs(R.string.business_activities_file);
+        String isCustomLocationSetting = getFromStringResources(R.string.business_activities_filter_location_is_custom);
         Boolean isCustomLocation = sharedPrefs.getBoolean(isCustomLocationSetting, false);
 
         return isCustomLocation;
     }
 
-    static void setStringSetting (int parameterID, String parameter)
+    static String getSearchTerm()
     {
-        SharedPreferences.Editor editor = getSharedPrefs().edit();
+        SharedPreferences sharedPrefs = getSharedPrefs(R.string.temporary_file);
+        String searchTermSetting = getFromStringResources(R.string.business_activities_search_term);
+
+        return sharedPrefs.getString(searchTermSetting, "");
+    }
+
+    static void setStringSetting (int parameterID, String parameter, Integer fileID)
+    {
+        SharedPreferences.Editor editor = getSharedPrefs(fileID).edit();
         String parameterName = KoffGlobal.getAppContext().getResources().getString(parameterID);
         editor.putString(parameterName, parameter);
         editor.commit(); // use "apply" if we want asynchronous later
     }
 
-    static void setFloatSetting (int parameterID, Float parameter)
+    static void setFloatSetting (int parameterID, Float parameter, Integer fileID)
     {
-        SharedPreferences.Editor editor = getSharedPrefs().edit();
+        SharedPreferences.Editor editor = getSharedPrefs(fileID).edit();
         String parameterName = KoffGlobal.getAppContext().getResources().getString(parameterID);
         editor.putFloat(parameterName, parameter);
         editor.commit(); // use "apply" if we want asynchronous later
     }
 
-    static void setIntSetting (int parameterID, Integer parameter)
+    static void setIntSetting (int parameterID, Integer parameter, Integer fileID)
     {
-        SharedPreferences.Editor editor = getSharedPrefs().edit();
+        SharedPreferences.Editor editor = getSharedPrefs(fileID).edit();
         String parameterName = KoffGlobal.getAppContext().getResources().getString(parameterID);
         editor.putInt(parameterName, parameter);
         editor.commit(); // use "apply" if we want asynchronous later
     }
 
-    static void setBoolSetting(int parameterID, Boolean parameter)
+    static void setBoolSetting(int parameterID, Boolean parameter, Integer fileID)
     {
-        SharedPreferences.Editor editor = getSharedPrefs().edit();
+        SharedPreferences.Editor editor = getSharedPrefs(fileID).edit();
         String parameterName = KoffGlobal.getAppContext().getResources().getString(parameterID);
         editor.putBoolean(parameterName, parameter);
         editor.commit(); // use "apply" if we want asynchronous later
@@ -275,11 +281,19 @@ public class BusinessEntitiesUtilities
                             if (location != null) {
                                 String loc = String.format("%f,%f", location.getLatitude(), location.getLongitude());
                                 Log.d(TAG, " " + loc);
-                                BusinessEntitiesUtilities.setStringSetting(R.string.business_activities_filter_location, loc);
+                                BusinessEntitiesUtilities.setStringSetting(
+                                        R.string.business_activities_filter_location,
+                                        loc,
+                                        R.string.business_activities_file
+                                );
                             }
                             else
                             {
-                                BusinessEntitiesUtilities.setStringSetting(R.string.business_activities_filter_location, "45.350127,14.407801");
+                                BusinessEntitiesUtilities.setStringSetting(
+                                        R.string.business_activities_filter_location,
+                                        "45.350127,14.407801",
+                                        R.string.business_activities_file
+                                );
                                 Log.d(TAG, "Location is null!");
                             }
                         }

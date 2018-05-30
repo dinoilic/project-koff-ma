@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.Toast;
@@ -64,6 +65,9 @@ public class MainActivity extends AppCompatActivity
                         new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                         KOFF_COARSE_LOCATION);
         }
+
+        Toolbar businessEntitiesListToolbar = (Toolbar) findViewById(R.id.mainactivity_appbar);
+        setSupportActionBar(businessEntitiesListToolbar);
     }
 
     @Override

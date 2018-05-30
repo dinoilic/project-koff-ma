@@ -8,6 +8,16 @@
     android:orientation="vertical"
     tools:context="com.dinotom.project_koff_ma.MainActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/mainactivity_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_main"
         android:layout_width="match_parent"

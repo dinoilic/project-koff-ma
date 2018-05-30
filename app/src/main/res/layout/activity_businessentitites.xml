@@ -7,18 +7,14 @@
     tools:context="com.dinotom.project_koff_ma.business_entities.BusinessEntitiesActivity"
     tools:layout_editor_absoluteY="25dp">
 
-    <!--
     <android.support.v7.widget.Toolbar
-        android:id="@+id/businessentity_appbar"
+        android:id="@+id/business_entities_list_appbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-        android:layout_marginTop="?android:attr/actionBarSize"
-        app:layout_constraintTop_toBottomOf="@+id/businessentity_appbar"
-    -->
 
     <Button
         android:id="@+id/sort_button"
@@ -29,7 +25,7 @@
         app:layout_constraintEnd_toStartOf="@+id/filter_button"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/business_entities_list_appbar" />
 
     <Button
         android:id="@+id/filter_button"
@@ -40,7 +36,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/sort_button"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/business_entities_list_appbar" />
+
+    <TextView
+        android:id="@+id/no_results_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/business_activities_no_results"
+        app:layout_constraintTop_toBottomOf="@+id/button_guideline" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_businessentities"
@@ -51,13 +54,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button_guideline" />
+        app:layout_constraintTop_toBottomOf="@+id/no_results_textview" />
 
     <android.support.constraint.Guideline
         android:id="@+id/button_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.09" />
+        app:layout_constraintGuide_percent="0.17" />
 
 </android.support.constraint.ConstraintLayout>

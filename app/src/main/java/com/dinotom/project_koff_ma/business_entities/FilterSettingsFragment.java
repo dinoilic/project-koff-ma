@@ -37,15 +37,15 @@ public class FilterSettingsFragment extends PreferenceFragment
 
         addPreferencesFromResource(R.xml.filter_preferences);
 
-        String seekbarKey = BusinessEntitiesUtilities.getStringFromStringResources(R.string.business_activities_filter_radius);
-        String locationKey = BusinessEntitiesUtilities.getStringFromStringResources(R.string.business_activities_filter_location);
+        String seekbarKey = BusinessEntitiesUtilities.getFromStringResources(R.string.business_activities_filter_radius);
+        String locationKey = BusinessEntitiesUtilities.getFromStringResources(R.string.business_activities_filter_location);
 
         // Get widgets :
         _seekBarPref = (SeekBarPreference) this.findPreference(seekbarKey);
         _locationScreen = (PreferenceScreen) this.findPreference(locationKey);
 
         // Set listener :
-        preferences = BusinessEntitiesUtilities.getSharedPrefs();
+        preferences = BusinessEntitiesUtilities.getSharedPrefs(R.string.business_activities_file);
         listener =
                 new SharedPreferences.OnSharedPreferenceChangeListener()
                 {
@@ -62,10 +62,10 @@ public class FilterSettingsFragment extends PreferenceFragment
         refreshRadiusSummary();
 
         _locationScreen= (PreferenceScreen) this.findPreference(
-                BusinessEntitiesUtilities.getStringFromStringResources(R.string.business_activities_filter_location));
+                BusinessEntitiesUtilities.getFromStringResources(R.string.business_activities_filter_location));
 
         Preference chooseLocation = _locationScreen.findPreference(
-                BusinessEntitiesUtilities.getStringFromStringResources(R.string.business_activities_filter_location_choose));
+                BusinessEntitiesUtilities.getFromStringResources(R.string.business_activities_filter_location_choose));
 
         chooseLocation.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -84,19 +84,22 @@ public class FilterSettingsFragment extends PreferenceFragment
         });
 
         Preference currentLocation = _locationScreen.findPreference(
-                BusinessEntitiesUtilities.getStringFromStringResources(R.string.business_activities_filter_location_current));
+                BusinessEntitiesUtilities.getFromStringResources(R.string.business_activities_filter_location_current));
 
         currentLocation.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference)
             {
                 BusinessEntitiesUtilities.setBoolSetting(
-                        R.string.business_activities_filter_location_is_custom, false);
+                        R.string.business_activities_filter_location_is_custom,
+                        false,
+                        R.string.business_activities_file
+                );
 
                 BusinessEntitiesUtilities.getLastLocation(KoffGlobal.getAppContext(), getActivity());
 
                 PreferenceScreen ps = (PreferenceScreen)findPreference(
-                        BusinessEntitiesUtilities.getStringFromStringResources(R.string.business_activities_filter_location));
+                        BusinessEntitiesUtilities.getFromStringResources(R.string.business_activities_filter_location));
                 ps.getDialog().dismiss();
 
                 return true;
@@ -112,13 +115,20 @@ public class FilterSettingsFragment extends PreferenceFragment
             {
                 Place place = PlacePicker.getPlace(data, KoffGlobal.getAppContext());
                 BusinessEntitiesUtilities.setBoolSetting(
-                        R.string.business_activities_filter_location_is_custom, true);
+                        R.string.business_activities_filter_location_is_custom,
+                        true,
+                        R.string.business_activities_file
+                );
                 String loc = String.format("%f,%f", place.getLatLng().latitude, place.getLatLng().longitude);
                 Log.d(TAG, " Custom location" + loc);
-                BusinessEntitiesUtilities.setStringSetting(R.string.business_activities_filter_location, loc);
+                BusinessEntitiesUtilities.setStringSetting(
+                        R.string.business_activities_filter_location,
+                        loc,
+                        R.string.business_activities_file
+                );
 
                 PreferenceScreen ps = (PreferenceScreen)findPreference(
-                        BusinessEntitiesUtilities.getStringFromStringResources(R.string.business_activities_filter_location));
+                        BusinessEntitiesUtilities.getFromStringResources(R.string.business_activities_filter_location));
                 ps.getDialog().dismiss();
             }
             Log.d(TAG, " Result code" + resultCode);
@@ -127,17 +137,17 @@ public class FilterSettingsFragment extends PreferenceFragment
 
     private void refreshRadiusSummary()
     {
-        String seekbarKey = BusinessEntitiesUtilities.getStringFromStringResources(R.string.business_activities_filter_radius);
+        String seekbarKey = BusinessEntitiesUtilities.getFromStringResources(R.string.business_activities_filter_radius);
 
         // Set seekbar summary :
         int radius = preferences.getInt(seekbarKey, 50);
-        String unit = BusinessEntitiesUtilities.getStringFromStringResources(R.string.business_activities_filter_radius_unit);
+        String unit = BusinessEntitiesUtilities.getFromStringResources(R.string.business_activities_filter_radius_unit);
         _seekBarPref.setSummary(String.format("%d %s", radius, unit));
     }
 
     private void refreshLocationSummary()
     {
-        String locationKey = BusinessEntitiesUtilities.getStringFromStringResources(R.string.business_activities_filter_location);
+        String locationKey = BusinessEntitiesUtilities.getFromStringResources(R.string.business_activities_filter_location);
 
         //_locationScreen.setSummary();
     }
