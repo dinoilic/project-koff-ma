@@ -327,6 +327,7 @@
                 android:id="@+id/entityDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="8dp"
                 android:text="Opis"
                 tools:layout_editor_absoluteX="10dp"
                 tools:layout_editor_absoluteY="153dp" />
