@@ -166,6 +166,22 @@ public class BusinessEntityInfoActivity extends AppCompatActivity implements ICo
                     }
                 }
 
+                List<String> phoneNumbers = details.getTelephoneNumbers();
+                ConstraintLayout cpnLayout = findViewById(R.id.bePhoneNumbersLayout);
+                ArrayList<Integer> listPhoneNumbers = new ArrayList<Integer>(
+                        Arrays.asList(R.id.beFirstPhoneNumber, R.id.beSecondPhoneNumber, R.id.beThirdPhoneNumber)
+                );
+
+                for (Integer listPhoneNumber : listPhoneNumbers) {
+                    TextView tvPhoneNumber = findViewById(listPhoneNumber);
+                    try {
+                        tvPhoneNumber.setText(phoneNumbers.get(listPhoneNumbers.indexOf(listPhoneNumber)));
+                    }
+                    catch (Exception e) {
+                        cpnLayout.removeView(tvPhoneNumber);
+                    }
+                }
+
                 TextView tvDescription = findViewById(R.id.entityDescription);
                 String description = response.body().getDescription() != null ? response.body().getDescription() : "";
                 Markwon.setMarkdown(tvDescription, description);

@@ -31,11 +31,19 @@ public class BusinessEntityDetails {
     @SerializedName("web_site")
     @Expose
     private List<String> webSite = null;
+    @SerializedName("telephone_numbers")
+    @Expose
+    private List<String> telephoneNumbers = null;
     @SerializedName("rating")
     @Expose
     private Double rating;
 
+    public List<String> getTelephoneNumbers() {
+        return telephoneNumbers;
+    }
+
     public Double getRating() {
+
         return rating;
     }
 

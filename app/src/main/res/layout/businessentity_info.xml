@@ -244,6 +244,74 @@
 
             </android.support.constraint.ConstraintLayout>
 
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/bePhoneNumbersLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Brojevi telefona:"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <android.support.constraint.Guideline
+                    android:id="@+id/bePhoneNumbersGuideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.35" />
+
+                <TextView
+                    android:id="@+id/beFirstPhoneNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:autoLink="phone"
+                    android:clickable="true"
+                    android:text="TextView"
+                    app:layout_constraintStart_toStartOf="@+id/bePhoneNumbersGuideline"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/beSecondPhoneNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:autoLink="phone"
+                    android:clickable="true"
+                    android:text="TextView"
+                    app:layout_constraintStart_toStartOf="@+id/bePhoneNumbersGuideline"
+                    app:layout_constraintTop_toBottomOf="@+id/beFirstPhoneNumber" />
+
+                <TextView
+                    android:id="@+id/beThirdPhoneNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:autoLink="phone"
+                    android:clickable="true"
+                    android:text="TextView"
+                    app:layout_constraintStart_toStartOf="@+id/bePhoneNumbersGuideline"
+                    app:layout_constraintTop_toBottomOf="@+id/beSecondPhoneNumber" />
+
+
+            </android.support.constraint.ConstraintLayout>
+
+
             <TextView
                 android:id="@+id/entityDescription"
                 android:layout_width="match_parent"
