@@ -2,6 +2,8 @@ package com.dinotom.project_koff_ma.business_entities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -9,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
@@ -228,6 +231,16 @@ public class BusinessEntityInfoActivity extends AppCompatActivity implements ICo
 
         KoffGlobal.bus.register(this); // register Otto bus for event observing
         ottoRegistered = true;
+
+        Toolbar businessEntityInfoToolbar = (Toolbar) findViewById(R.id.business_entity_info_appbar);
+        setSupportActionBar(businessEntityInfoToolbar);
+
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0x802196f3));
+        //getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0x80FFFFFF));
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     private void setupCommentsCall()
@@ -519,6 +532,13 @@ public class BusinessEntityInfoActivity extends AppCompatActivity implements ICo
     {
         paginate.unbind();
         super.onDestroy();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp()
+    {
+        onBackPressed();
+        return true;
     }
 
     @Override
