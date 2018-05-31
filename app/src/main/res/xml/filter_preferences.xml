@@ -5,12 +5,10 @@
         android:title="@string/business_activities_filter_location_title"
         android:persistent="false">
 
-        <Preference
-            android:key="@string/business_activities_filter_location_current"
-            android:title="@string/business_activities_filter_location_current_title"/>
-        <Preference
-            android:key="@string/business_activities_filter_location_choose"
-            android:title="@string/business_activities_filter_location_choose_title"/>
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.dinotom.project_koff_ma.business_entities.FilterLocationSettingsActivity"
+            android:targetPackage="com.dinotom.project_koff_ma"/>
 
     </PreferenceScreen>
     <com.dinotom.project_koff_ma.business_entities.SeekBarPreference

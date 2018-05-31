@@ -6,18 +6,18 @@ import android.support.v7.widget.Toolbar;
 
 import com.dinotom.project_koff_ma.R;
 
-public class FilterSettingsActivity extends AppCompatActivity
+public class FilterLocationSettingsActivity extends AppCompatActivity
 {
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.filter_settings_activity);
+        setContentView(R.layout.filter_location_settings_activity);
         overridePendingTransition(R.anim.enter_activity_1, R.anim.enter_activity_2);
 
-        Toolbar filterActivityToolbar = (Toolbar) findViewById(R.id.filter_activity_appbar);
+        Toolbar filterActivityToolbar = (Toolbar) findViewById(R.id.filter_location_activity_appbar);
 
-        filterActivityToolbar.setTitle("Filter");
+        filterActivityToolbar.setTitle("Lokacija");
 
         setSupportActionBar(filterActivityToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
