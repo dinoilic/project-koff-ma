@@ -19,7 +19,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
             android:orientation="vertical"
             android:paddingTop="5dp"
             tools:layout_editor_absoluteX="10dp"
@@ -322,9 +321,9 @@
 
             <View
                 android:id="@+id/ratingLine1"
-                android:layout_height="2dp"
                 android:layout_width="match_parent"
-                android:background="?android:attr/listDivider"/>
+                android:layout_height="2dp"
+                android:background="?android:attr/listDivider" />
 
 
             <TextView
@@ -358,46 +357,59 @@
 
                 <Button
                     android:id="@+id/rating_submit_button"
+                    style="@style/Widget.AppCompat.Button.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:text="Potvrdi"
+                    android:theme="@style/ButtonSuccess"
                     android:visibility="visible" />
 
                 <Button
                     android:id="@+id/rating_delete_button"
+                    style="@style/Widget.AppCompat.Button.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
                     android:layout_weight="1"
-                    android:text="Izbriši" />
+                    android:text="Izbriši"
+                    android:theme="@style/ButtonDanger" />
             </LinearLayout>
 
             <View
                 android:id="@+id/ratingLine2"
-                android:layout_height="2dp"
                 android:layout_width="match_parent"
-                android:background="?android:attr/listDivider"/>
+                android:layout_height="2dp"
+                android:background="?android:attr/listDivider" />
 
             <Button
                 android:id="@+id/comment_button"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Komentiraj" />
+                android:layout_margin="10dp"
+                android:text="Komentiraj"
+                android:textAlignment="center"
+                android:theme="@style/ButtonPrimary"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="412dp" />
 
             <View
                 android:id="@+id/commentBottomLine"
-                android:layout_height="2dp"
                 android:layout_width="match_parent"
-                android:background="?android:attr/listDivider"/>
+                android:layout_height="2dp"
+                android:background="?android:attr/listDivider"
+                android:visibility="invisible" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_commentsandratings_in_activity"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:nestedScrollingEnabled="false"
-                android:padding="2dp" />
+                android:layout_marginBottom="5dp"
+                android:nestedScrollingEnabled="false" />
 
         </LinearLayout>
 

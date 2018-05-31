@@ -10,12 +10,14 @@
         android:id="@+id/cv_commentandrating"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="5dp">
+        android:layout_margin="2dp"
+        app:cardElevation="2dp">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:padding="1dp">
 
             <TextView
@@ -64,23 +66,27 @@
 
             <Button
                 android:id="@+id/edit_comment_button"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Uredi"
+                android:theme="@style/ButtonPrimary"
                 app:layout_constraintEnd_toStartOf="@+id/delete_comment_button"
                 app:layout_constraintTop_toBottomOf="@+id/comment" />
 
             <Button
                 android:id="@+id/delete_comment_button"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Izbriši"
+                android:theme="@style/ButtonDanger"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/comment" />
 

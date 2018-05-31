@@ -18,6 +18,8 @@
 
     <Button
         android:id="@+id/sort_button"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:theme="@style/ButtonPrimary"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="SORT"
@@ -29,6 +31,8 @@
 
     <Button
         android:id="@+id/filter_button"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:theme="@style/ButtonPrimary"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="FILTER"

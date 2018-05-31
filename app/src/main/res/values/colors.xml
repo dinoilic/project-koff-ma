@@ -5,8 +5,11 @@
     <color name="colorPrimaryDark">#1976D2</color>
     <color name="colorAccent">#F44336</color>
     <color name="white">#FFFFFF</color>
+    <color name="lightGrey">#F5F5F5</color>
     <color name="transparent">@android:color/transparent</color>
     <color name="categoryTitle">@color/colorPrimary</color>
     <color name="openColor">@android:color/holo_green_dark</color>
     <color name="closedColor">@android:color/holo_red_dark</color>
+    <color name="danger">#F44336</color>
+    <color name="success">#43A047</color>
 </resources>
