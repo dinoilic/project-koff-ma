@@ -10,13 +10,14 @@
         android:id="@+id/cv_businessentity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="5dp">
+        android:layout_margin="3dp"
+        app:cardElevation="2dp">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="1dp">
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/businessentity_name"
@@ -53,6 +54,7 @@
                 style="?android:attr/ratingBarStyleIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:isIndicator="true"
                 android:max="5"
                 android:rating="0"
