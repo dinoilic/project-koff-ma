@@ -31,7 +31,7 @@
         <ScrollView
             android:id="@+id/login_form"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/username_login_form"
@@ -76,12 +76,12 @@
                 <Button
                     android:id="@+id/login_button"
                     style="@style/Widget.AppCompat.Button.Colored"
-                    android:theme="@style/ButtonPrimary"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="55dp"
                     android:layout_marginTop="16dp"
                     android:text="@string/login_button"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:theme="@style/ButtonPrimary" />
 
             </LinearLayout>
         </ScrollView>

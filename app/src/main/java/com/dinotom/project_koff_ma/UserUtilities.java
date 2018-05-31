@@ -48,6 +48,14 @@ public class UserUtilities
             @Override
             public void onResponse(Call<UserToken> call, Response<UserToken> response) {
                 UserToken token = response.body();
+
+                if(token == null)
+                {
+                    KoffGlobal.bus.post(KoffGlobal.getAppContext().getResources().getString(R.string.login_failure_event));
+                    Log.d(TAG, " Null token!");
+                    return;
+                }
+
                 UserUtilities.setNewUserToken(token.getToken());
                 Log.d(TAG + "fetchNewToken", UserUtilities.getCurrentUserToken());
                 KoffGlobal.bus.post(KoffGlobal.getAppContext().getResources().getString(R.string.login_successful_event));
@@ -74,6 +82,10 @@ public class UserUtilities
             {
                 if(response.code() == 403) { // find a better way later
                     Log.d(TAG + "checkTokenValidity", "User auth token is not valid, fetching a new one.");
+
+                    if(KoffGlobal.bus == null)
+                        Log.d(TAG, "Otto Bus is uninitialized!");
+
                     // send "notification" to MainActivity so that it can initialize login procedure
                     KoffGlobal.bus.post(KoffGlobal.getAppContext().getResources().getString(R.string.main_activity_login_event));
                 }

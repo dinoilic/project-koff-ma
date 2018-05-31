@@ -65,6 +65,10 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        apiInterface = APIClient.getClient().create(APIInterface.class); // initialize default REST interface, with default authorization headers
+        KoffGlobal.bus.register(this); // register Otto bus for event observing
+        ottoRegistered = true;
+
         overridePendingTransition(R.anim.enter_activity_1, R.anim.enter_activity_2);
 
         recyclerView = (RecyclerView) findViewById(R.id.rv_main);
@@ -92,10 +96,6 @@ public class MainActivity extends AppCompatActivity
     {
         super.onStart();
 
-        apiInterface = APIClient.getClient().create(APIInterface.class); // initialize default REST interface, with default authorization headers
-        KoffGlobal.bus.register(this); // register Otto bus for event observing
-        ottoRegistered = true;
-
         String currentUserToken = UserUtilities.getCurrentUserToken(); // get current User Auth Token from shared preferences
         if(currentUserToken == null || currentUserToken.isEmpty())
             initiateLoginActivity();
@@ -107,20 +107,6 @@ public class MainActivity extends AppCompatActivity
     {
         Intent intent = new Intent(getBaseContext(), LoginActivity.class);
         startActivityForResult(intent, LOGIN_REQUEST);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if (requestCode == LOGIN_REQUEST)
-        {
-            if (resultCode == RESULT_OK)
-            {
-                String username = data.getStringExtra("username");
-                String password = data.getStringExtra("password");
-                Log.d(TAG, String.format("Received data: %s %s", username, password));
-            }
-        }
     }
 
     @Override
@@ -142,9 +128,12 @@ public class MainActivity extends AppCompatActivity
     @Subscribe
     public void ottoMainActivitySubscriber(String event)
     {
-        if(event.equals(getBaseContext().getResources().getString(R.string.main_activity_event))) // if the event is intended for this activity
+        Log.d(TAG, String.format("Event is %s", event));
+
+        if(event.equals(getBaseContext().getResources().getString(R.string.main_activity_event)))
             createCategoryGridView();
-        else if (event.equals(getBaseContext().getResources().getString(R.string.main_activity_login_event)))
+
+        if (event.equals(getBaseContext().getResources().getString(R.string.main_activity_login_event)))
             initiateLoginActivity();
     }
 

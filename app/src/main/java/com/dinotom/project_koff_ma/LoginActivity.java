@@ -87,16 +87,15 @@ public class LoginActivity extends AppCompatActivity
     {
         if(event.equals(getBaseContext().getResources().getString(R.string.login_successful_event)))
         {
-            progressBar.setVisibility(View.GONE);
             Intent returnIntent = new Intent();
             setResult(Activity.RESULT_OK, returnIntent);
             finish();
         }
         else if(event.equals(getBaseContext().getResources().getString(R.string.login_failure_event)))
         {
-            progressBar.setVisibility(View.GONE);
             String loginFailureInfo = getBaseContext().getResources().getString(R.string.login_failure_info);
             Toast.makeText(getApplicationContext(),loginFailureInfo , Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.GONE);
         }
     }
 
@@ -115,5 +114,8 @@ public class LoginActivity extends AppCompatActivity
         if(ottoRegistered) KoffGlobal.bus.unregister(this);
         ottoRegistered = false;
     }
+
+    @Override
+    public void onBackPressed() { }
 }
 

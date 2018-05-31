@@ -9,11 +9,12 @@ import com.squareup.otto.ThreadEnforcer;
 public class KoffGlobal extends Application
 {
     private static Context mContext;
-    public static Bus bus = new Bus(ThreadEnforcer.MAIN);
+    public static Bus bus;
 
     public void onCreate()
     {
         super.onCreate();
+        bus = new Bus(ThreadEnforcer.MAIN);
         mContext = getApplicationContext();
     }
 
