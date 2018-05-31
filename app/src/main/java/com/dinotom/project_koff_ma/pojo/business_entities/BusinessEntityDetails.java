@@ -31,6 +31,13 @@ public class BusinessEntityDetails {
     @SerializedName("web_site")
     @Expose
     private List<String> webSite = null;
+    @SerializedName("rating")
+    @Expose
+    private Double rating;
+
+    public Double getRating() {
+        return rating;
+    }
 
     public Integer getPk() {
         return pk;

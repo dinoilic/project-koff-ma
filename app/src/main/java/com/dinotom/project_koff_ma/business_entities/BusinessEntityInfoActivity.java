@@ -79,7 +79,7 @@ public class BusinessEntityInfoActivity extends AppCompatActivity implements ICo
 
         Intent intent = getIntent();
         entityPk = intent.getIntExtra("ENTITY_PK", -1);
-        final double entityAvgScore = intent.getDoubleExtra("ENTITY_AVG_SCORE", -1);
+        // final double entityAvgScore = intent.getDoubleExtra("ENTITY_AVG_SCORE", -1);
         final String entityIsWorking = intent.getStringExtra("ENTITY_WORKING");
 
         apiInterface = APIClient.getClient().create(APIInterface.class);
@@ -91,6 +91,9 @@ public class BusinessEntityInfoActivity extends AppCompatActivity implements ICo
             public void onResponse(Call<BusinessEntityDetails> call, Response<BusinessEntityDetails> response)
             {
                 final BusinessEntityDetails details = response.body();
+                double entityAvgScore = 0.0;
+
+                entityAvgScore = details.getRating();
 
                 TextView tv = findViewById(R.id.entityName);
                 tv.setText(details.getName());
