@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Guideline;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,6 +39,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import ru.alexbykov.nopaginate.paginate.Paginate;
 import ru.alexbykov.nopaginate.paginate.PaginateBuilder;
+
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
 
 public class BusinessEntitiesActivity extends AppCompatActivity implements IBusinessEntitiesView
@@ -143,6 +147,16 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
         apiInterface = APIClient.getClient().create(APIInterface.class);
         overridePendingTransition(R.anim.enter_activity_1, R.anim.enter_activity_2);
         setContentView(R.layout.activity_businessentitites);
+
+        int orientation = getResources().getConfiguration().orientation;
+
+        if(orientation == ORIENTATION_LANDSCAPE)
+        {
+            Guideline buttonGuideline = findViewById(R.id.button_guideline);
+            ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) buttonGuideline.getLayoutParams();
+            params.guidePercent = 0.30f;
+            buttonGuideline.setLayoutParams(params);
+        }
 
         String searchIds = BusinessEntitiesUtilities.getIds();
 

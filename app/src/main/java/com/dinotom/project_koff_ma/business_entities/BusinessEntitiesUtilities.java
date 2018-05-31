@@ -165,7 +165,8 @@ public class BusinessEntitiesUtilities
             }
         }
 
-        return result;
+
+        return result.substring(0, result.length() - 1);
     }
 
     static String getFromStringResources(int stringID)
