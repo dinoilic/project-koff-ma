@@ -117,6 +117,8 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         if(!ottoRegistered) KoffGlobal.bus.register(this);
         ottoRegistered = true;
+
+        this.invalidateOptionsMenu();
     }
 
     @Override
