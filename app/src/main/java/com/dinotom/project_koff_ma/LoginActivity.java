@@ -77,9 +77,11 @@ public class LoginActivity extends AppCompatActivity
 
         if(username.isEmpty() || password.isEmpty())
             Toast.makeText(getApplicationContext(), warningForEmpty, Toast.LENGTH_SHORT).show();
-
-        UserUtilities.fetchNewToken(username, password);
-        progressBar.setVisibility(View.VISIBLE);
+        else
+        {
+            UserUtilities.fetchNewToken(username, password);
+            progressBar.setVisibility(View.VISIBLE);
+        }
     }
 
     @Subscribe

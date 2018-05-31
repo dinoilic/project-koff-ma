@@ -68,6 +68,7 @@
     <string name="login_password_hint">Unesite lozinku</string>
     <string name="login_appbar_title">Prijavi se</string>
     <string name="login_button">Prijavi se</string>
+    <string name="logout_button">Odjavi se</string>
 
     <string name="login_successful_event">LOGIN_SUCCESSFUL_EVENT</string>
     <string name="login_failure_event">LOGIN_FAILURE_EVENT</string>

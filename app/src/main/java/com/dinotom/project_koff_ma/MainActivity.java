@@ -3,8 +3,12 @@ package com.dinotom.project_koff_ma;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -56,6 +60,8 @@ public class MainActivity extends AppCompatActivity
 
     List<Result> categoryList;
 
+    private DrawerLayout mDrawerLayout;
+
     MenuItem searchMenuItem;
     SearchView searchView;
 
@@ -76,6 +82,28 @@ public class MainActivity extends AppCompatActivity
         recyclerView = (RecyclerView) findViewById(R.id.rv_main);
         recyclerView.setLayoutManager(new GridLayoutManager(KoffGlobal.getAppContext(), 3));
 
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener()
+                {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem)
+                    {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        // close drawer when item is tapped
+                        mDrawerLayout.closeDrawers();
+
+                        UserUtilities.setNewUserToken("");
+                        recreate();
+
+                        return true;
+                    }
+                });
+
+
         BusinessEntitiesActivity.resetSortAndFilterData();
 
         // Request Location Permission
@@ -91,6 +119,9 @@ public class MainActivity extends AppCompatActivity
 
         Toolbar businessEntitiesListToolbar = (Toolbar) findViewById(R.id.mainactivity_appbar);
         setSupportActionBar(businessEntitiesListToolbar);
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
     }
 
     @Override
@@ -139,6 +170,16 @@ public class MainActivity extends AppCompatActivity
 
         if (event.equals(getBaseContext().getResources().getString(R.string.main_activity_login_event)))
             initiateLoginActivity();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void createCategoryGridView()
