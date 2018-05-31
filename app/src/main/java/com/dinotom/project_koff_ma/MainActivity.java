@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -84,7 +85,7 @@ public class MainActivity extends AppCompatActivity
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        final NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener()
                 {
@@ -97,12 +98,13 @@ public class MainActivity extends AppCompatActivity
                         mDrawerLayout.closeDrawers();
 
                         UserUtilities.setNewUserToken("");
-                        recreate();
+                        initiateLoginActivity();
+
+                        //recreate();
 
                         return true;
                     }
                 });
-
 
         BusinessEntitiesActivity.resetSortAndFilterData();
 
@@ -134,6 +136,12 @@ public class MainActivity extends AppCompatActivity
             initiateLoginActivity();
         else
             UserUtilities.checkTokenValidity(currentUserToken); // checks validity of the current token; if invalid, fetches new token
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (requestCode == LOGIN_REQUEST && resultCode == RESULT_OK) recreate();
     }
 
     private void initiateLoginActivity()
