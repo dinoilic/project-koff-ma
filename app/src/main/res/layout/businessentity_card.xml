@@ -21,20 +21,28 @@
 
             <TextView
                 android:id="@+id/businessentity_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
                 android:gravity="center_vertical"
+                android:maxLines="2"
                 android:text="Automehaničar Rijeka d.o.o."
                 android:textSize="16sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/businessentity_guideline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/businessentity_address"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
                 android:text="Primorska 41, Rijeka, 51000"
                 android:textSize="16sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/businessentity_guideline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/businessentity_name" />
 
@@ -73,6 +81,13 @@
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/businessentity_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.7" />
 
         </android.support.constraint.ConstraintLayout>
 
