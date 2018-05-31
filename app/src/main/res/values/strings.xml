@@ -29,6 +29,7 @@
 
     <string name="business_activities_search_term">com.dinotom.project_koff_ma.BUSINESS_ACTIVITIES_SEARCH_TERM</string>
     <string name="business_activities_search_ids">com.dinotom.project_koff_ma.BUSINESS_ACTIVITIES_SEARCH_IDS</string>
+    <string name="business_activities_no_entities">Nema rezultata za traženu potkategoriju!</string>
     <string name="business_activities_no_results">Nema rezultata za traženi pojam!</string>
 
     <string name="business_info_confirm_rating">Potvrdi</string>
@@ -43,6 +44,7 @@
 
     <string name="main_activity_event">MainActivityEvent</string>
     <string name="main_activity_login_event">MainActivityLoginEvent</string>
+    <string name="no_entities_event">NoEntitiesEvent</string>
     <string name="comment_edit_event">CommentEditEvent</string>
     <string name="comment_delete_event">CommentDeleteEvent</string>
 

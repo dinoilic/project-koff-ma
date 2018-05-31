@@ -7,6 +7,7 @@ import com.dinotom.project_koff_ma.APIClient;
 import com.dinotom.project_koff_ma.APIInterface;
 import com.dinotom.project_koff_ma.CategoryAdapter;
 import com.dinotom.project_koff_ma.KoffGlobal;
+import com.dinotom.project_koff_ma.R;
 import com.dinotom.project_koff_ma.pojo.business_entities.BusinessEntityPage;
 import com.dinotom.project_koff_ma.pojo.category.Category;
 import com.dinotom.project_koff_ma.pojo.category.Result;
@@ -88,7 +89,14 @@ public class BusinessEntitiesPresenter implements OnLoadMoreListener
             public void onResponse(Call<BusinessEntityPage> call, Response<BusinessEntityPage> response)
             {
                 BusinessEntityPage businessEntityPage = response.body();
-                if (businessEntityPage != null) {
+                if (businessEntityPage != null)
+                {
+                    if(businessEntityPage.getCount() == 0)
+                    {
+                        KoffGlobal.bus.post(KoffGlobal.getAppContext().getResources().getString(R.string.no_entities_event));
+                        Log.d(TAG, String.format("No BusinessEntities!"));
+                    }
+
                     currentPage += 1;
                     view.addItems(businessEntityPage.getResults());
                     if (view.getItemsNum() >= businessEntityPage.getCount())

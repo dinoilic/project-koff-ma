@@ -30,6 +30,7 @@ import com.dinotom.project_koff_ma.KoffGlobal;
 import com.dinotom.project_koff_ma.R;
 import com.dinotom.project_koff_ma.pojo.business_entities.BusinessEntity;
 import com.dinotom.project_koff_ma.pojo.search.SearchPage;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +61,9 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
     APIInterface apiInterface;
 
     Integer subcategoryPk;
+    TextView noResultsTextView;
+
+    boolean ottoRegistered = false;
 
     private void getSearchResults(String searchQuery)
     {
@@ -145,10 +149,12 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
 
         Intent intent = getIntent();
         apiInterface = APIClient.getClient().create(APIInterface.class);
+        KoffGlobal.bus.register(this); // register Otto bus for event observing
+        ottoRegistered = true;
         overridePendingTransition(R.anim.enter_activity_1, R.anim.enter_activity_2);
         setContentView(R.layout.activity_businessentitites);
 
-        TextView noResultsTextView = findViewById(R.id.no_results_textview);
+        noResultsTextView = findViewById(R.id.no_results_textview);
         noResultsTextView.setVisibility(View.GONE);
 
         int orientation = getResources().getConfiguration().orientation;
@@ -355,6 +361,35 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
     @Override
     public void setPaginateNoMoreData(boolean isNoMoreItems) {
         paginate.setNoMoreItems(isNoMoreItems);
+    }
+
+    @Subscribe
+    public void ottoBusinessEntitiesActivitySubscriber(String event)
+    {
+        if(event.equals(getResources().getString(R.string.no_entities_event)))
+        {
+            if(noResultsTextView != null)
+            {
+                noResultsTextView.setText(R.string.business_activities_no_entities);
+                noResultsTextView.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if(!ottoRegistered) KoffGlobal.bus.register(this);
+        ottoRegistered = true;
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        if(ottoRegistered) KoffGlobal.bus.unregister(this);
+        ottoRegistered = false;
     }
 
     @Override
