@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.SearchView;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity
 
     List<Result> categoryList;
 
+    MenuItem searchMenuItem;
     SearchView searchView;
 
     boolean ottoRegistered = false;
@@ -171,8 +173,8 @@ public class MainActivity extends AppCompatActivity
     {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_search, menu);
-        MenuItem item = menu.findItem(R.id.menuSearch);
-        searchView = (SearchView)item.getActionView();
+        searchMenuItem = menu.findItem(R.id.menuSearch);
+        searchView = (SearchView)searchMenuItem.getActionView();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
         {

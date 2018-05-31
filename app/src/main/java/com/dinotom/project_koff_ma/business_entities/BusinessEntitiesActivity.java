@@ -142,11 +142,14 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        Intent intent = getIntent();
 
+        Intent intent = getIntent();
         apiInterface = APIClient.getClient().create(APIInterface.class);
         overridePendingTransition(R.anim.enter_activity_1, R.anim.enter_activity_2);
         setContentView(R.layout.activity_businessentitites);
+
+        TextView noResultsTextView = findViewById(R.id.no_results_textview);
+        noResultsTextView.setVisibility(View.GONE);
 
         int orientation = getResources().getConfiguration().orientation;
 
@@ -185,7 +188,10 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
         Log.d(TAG, String.format("searchIds: %s", searchIds));
 
         if(searchIds.equals("NO_RESULTS"))
+        {
+            noResultsTextView.setVisibility(View.VISIBLE);
             businessEntitiesPresenter = null;
+        }
         else if(searchIds.isEmpty())
             businessEntitiesPresenter = new BusinessEntitiesPresenter(this, subcategoryPk, null);
         else
@@ -193,9 +199,6 @@ public class BusinessEntitiesActivity extends AppCompatActivity implements IBusi
 
         if(businessEntitiesPresenter != null)
         {
-            TextView noResultsTextView = findViewById(R.id.no_results_textview);
-            noResultsTextView.setVisibility(View.GONE);
-
             paginate = new PaginateBuilder()
                     .with(recyclerView)
                     .setOnLoadMoreListener(businessEntitiesPresenter)

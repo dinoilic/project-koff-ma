@@ -46,6 +46,7 @@
         android:id="@+id/no_results_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="8dp"
         android:text="@string/business_activities_no_results"
         app:layout_constraintTop_toBottomOf="@+id/button_guideline" />
 
