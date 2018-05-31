@@ -42,6 +42,7 @@
     <string name="delete_rating_and_comment_warning">Jeste li sigurni da želite obrisati ocjenu? Obrisat ćete istovremeno i komentar.</string>
 
     <string name="main_activity_event">MainActivityEvent</string>
+    <string name="main_activity_login_event">MainActivityLoginEvent</string>
     <string name="comment_edit_event">CommentEditEvent</string>
     <string name="comment_delete_event">CommentDeleteEvent</string>
 
@@ -57,4 +58,15 @@
     <string name="businessentity_sortby_za">Z-A</string>
 
     <string name="businessentity_filter_dialog_title">Filter</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <string name="login_username_hint">Unesite korisničko ime</string>
+    <string name="login_empty_warning">Niste unijeli sve podatke!</string>
+    <string name="login_failure_info">Neuspješna prijava! Provjerite svoje podatke.</string>
+    <string name="login_password_hint">Unesite lozinku</string>
+    <string name="login_appbar_title">Prijavi se</string>
+    <string name="login_button">Prijavi se</string>
+
+    <string name="login_successful_event">LOGIN_SUCCESSFUL_EVENT</string>
+    <string name="login_failure_event">LOGIN_FAILURE_EVENT</string>
 </resources>

@@ -40,22 +40,22 @@ public class UserUtilities
         editor.commit(); // use "apply" if we want asynchronous later
     }
 
-    static void fetchNewToken()
+    static void fetchNewToken(final String username, final String password)
     {
         APIInterface apiInterface = APIClient.getClientWithoutDefaultHeaders().create(APIInterface.class);
-        Call<UserToken> userTokenCall = apiInterface.getUserToken("superuser", "superuser"); // add login procedure here later
+        Call<UserToken> userTokenCall = apiInterface.getUserToken(username, password); // add login procedure here later
         userTokenCall.enqueue(new Callback<UserToken>() {
             @Override
             public void onResponse(Call<UserToken> call, Response<UserToken> response) {
                 UserToken token = response.body();
                 UserUtilities.setNewUserToken(token.getToken());
                 Log.d(TAG + "fetchNewToken", UserUtilities.getCurrentUserToken());
-                // send "notification" to MainActivity so that it can begin with loading it's own content
-                KoffGlobal.bus.post(KoffGlobal.getAppContext().getResources().getString(R.string.main_activity_event));
+                KoffGlobal.bus.post(KoffGlobal.getAppContext().getResources().getString(R.string.login_successful_event));
             }
             @Override
             public void onFailure(Call<UserToken> call, Throwable t) {
                 call.cancel();
+                KoffGlobal.bus.post(KoffGlobal.getAppContext().getResources().getString(R.string.login_failure_event));
                 Log.d(TAG + "fetchNewToken", "Token fetching unsuccessful!");
             }
         });
@@ -74,7 +74,8 @@ public class UserUtilities
             {
                 if(response.code() == 403) { // find a better way later
                     Log.d(TAG + "checkTokenValidity", "User auth token is not valid, fetching a new one.");
-                    fetchNewToken();
+                    // send "notification" to MainActivity so that it can initialize login procedure
+                    KoffGlobal.bus.post(KoffGlobal.getAppContext().getResources().getString(R.string.main_activity_login_event));
                 }
                 else {
                     Log.d(TAG + "checkTokenValidity", "User auth token is valid!");

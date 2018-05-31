@@ -5,6 +5,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
         android:name=".KoffGlobal"
         android:allowBackup="true"
@@ -20,11 +25,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".business_entities.BusinessEntitiesActivity"
-            android:windowSoftInputMode="adjustPan"
-            />
+            android:windowSoftInputMode="adjustPan" />
 
         <meta-data
             android:name="preloaded_fonts"
@@ -36,9 +39,12 @@
         <activity android:name=".SubcategoryActivity" />
         <activity android:name=".business_entities.FilterSettingsActivity" />
         <activity android:name=".business_entities.BusinessEntityInfoActivity" />
-        <activity android:name=".business_entities.CommentActivity"
-            android:windowSoftInputMode="stateVisible">
-        </activity>
+        <activity
+            android:name=".business_entities.CommentActivity"
+            android:windowSoftInputMode="stateVisible"></activity>
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login"></activity>
     </application>
 
 </manifest>

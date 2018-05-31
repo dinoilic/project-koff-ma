@@ -11,6 +11,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -39,11 +40,14 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
 {
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     public static final String MAIN_CATEGORY_PK = "com.dinotom.project_koff_ma.MAIN_CATEGORY_PK";
     public static final String MAIN_CATEGORY_NAME = "com.dinotom.project_koff_ma.MAIN_CATEGORY_NAME";
     public static final String MAIN_CATEGORY_CHILDREN = "com.dinotom.project_koff_ma.MAIN_CATEGORY_CHILDREN";
 
     private static final int KOFF_COARSE_LOCATION = 1;
+    static final int LOGIN_REQUEST = 321;
 
     APIInterface apiInterface;
     RecyclerView recyclerView;
@@ -94,9 +98,29 @@ public class MainActivity extends AppCompatActivity
 
         String currentUserToken = UserUtilities.getCurrentUserToken(); // get current User Auth Token from shared preferences
         if(currentUserToken == null || currentUserToken.isEmpty())
-            UserUtilities.fetchNewToken();
+            initiateLoginActivity();
         else
             UserUtilities.checkTokenValidity(currentUserToken); // checks validity of the current token; if invalid, fetches new token
+    }
+
+    private void initiateLoginActivity()
+    {
+        Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+        startActivityForResult(intent, LOGIN_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (requestCode == LOGIN_REQUEST)
+        {
+            if (resultCode == RESULT_OK)
+            {
+                String username = data.getStringExtra("username");
+                String password = data.getStringExtra("password");
+                Log.d(TAG, String.format("Received data: %s %s", username, password));
+            }
+        }
     }
 
     @Override
@@ -105,14 +129,6 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         if(!ottoRegistered) KoffGlobal.bus.register(this);
         ottoRegistered = true;
-
-        /*if(searchView != null)
-        {
-            searchView.setFocusableInTouchMode(false);
-            searchView.setFocusable(false);
-            searchView.setFocusableInTouchMode(true);
-            searchView.setFocusable(true);
-        }*/
     }
 
     @Override
@@ -124,12 +140,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Subscribe
-    public void initializeActivity(String event)
+    public void ottoMainActivitySubscriber(String event)
     {
-        if(event.equals(KoffGlobal.getAppContext().getResources().getString(R.string.main_activity_event))) // if the event is intended for this activity
-        {
+        if(event.equals(getBaseContext().getResources().getString(R.string.main_activity_event))) // if the event is intended for this activity
             createCategoryGridView();
-        }
+        else if (event.equals(getBaseContext().getResources().getString(R.string.main_activity_login_event)))
+            initiateLoginActivity();
     }
 
     private void createCategoryGridView()
@@ -147,8 +163,6 @@ public class MainActivity extends AppCompatActivity
                      mainCategories.getResults()) {
                     categoryList.add(category);
                 }
-
-                //categoryList = mainCategories.getResults();
 
                 categoryAdapter = new CategoryAdapter(KoffGlobal.getAppContext(), categoryList);
                 recyclerView.setAdapter(categoryAdapter);
@@ -189,7 +203,6 @@ public class MainActivity extends AppCompatActivity
                 return false;
             }
         });
-
         return super.onCreateOptionsMenu(menu);
     }
 }
