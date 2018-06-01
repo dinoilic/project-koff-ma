@@ -13,7 +13,6 @@ public class FilterLocationSettingsActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.filter_location_settings_activity);
-        overridePendingTransition(R.anim.enter_activity_1, R.anim.enter_activity_2);
 
         Toolbar filterActivityToolbar = (Toolbar) findViewById(R.id.filter_location_activity_appbar);
 
@@ -35,6 +34,5 @@ public class FilterLocationSettingsActivity extends AppCompatActivity
     public void onBackPressed()
     {
         super.onBackPressed();
-        overridePendingTransition(R.anim.exit_activity_1, R.anim.exit_activity_2);
     }
 }

@@ -1,5 +1,6 @@
 package com.dinotom.project_koff_ma.business_entities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Geocoder;
@@ -57,8 +58,11 @@ public class FilterSettingsFragment extends PreferenceFragment
                     public void onSharedPreferenceChanged(SharedPreferences prefs, String key)
                     {
                         Log.d(TAG, " onSharedPreferenceChanged called.");
-                        refreshLocationSummary();
-                        refreshRadiusSummary();
+                        Log.d(TAG, String.format("Key is %s", key));
+                        if(key.equals(BusinessEntitiesUtilities.getFromStringResources(R.string.business_activities_filter_location)))
+                            refreshLocationSummary();
+                        else if(key.equals(BusinessEntitiesUtilities.getFromStringResources(R.string.business_activities_filter_radius)))
+                            refreshRadiusSummary();
                     }
                 };
         preferences.registerOnSharedPreferenceChangeListener(listener);
@@ -92,10 +96,12 @@ public class FilterSettingsFragment extends PreferenceFragment
         if(mResultReceiver == null)
             mResultReceiver = new AddressResultReceiver(new Handler());
 
-        Intent intent = new Intent(getActivity(), FetchAddressIntentService.class);
-        intent.putExtra(FetchAddressIntentService.RECEIVER, mResultReceiver);
-        intent.putExtra(FetchAddressIntentService.LOCATION_DATA_EXTRA, location);
-        getActivity().startService(intent);
+        if(getActivity() != null) {
+            Intent intent = new Intent(getActivity(), FetchAddressIntentService.class);
+            intent.putExtra(FetchAddressIntentService.RECEIVER, mResultReceiver);
+            intent.putExtra(FetchAddressIntentService.LOCATION_DATA_EXTRA, location);
+            getActivity().startService(intent);
+        }
     }
 
     class AddressResultReceiver extends ResultReceiver
