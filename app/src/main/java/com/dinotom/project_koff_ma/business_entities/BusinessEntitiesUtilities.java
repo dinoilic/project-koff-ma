@@ -21,6 +21,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -59,6 +60,16 @@ public class BusinessEntitiesUtilities
             getFromStringResources(R.string.businessentity_sortby_za)
     };
 
+    static HashMap<String,String> days_hr_to_eng = new HashMap<String,String>() {{
+        put("Pon", "Mon");
+        put("Uto","Tue");
+        put("Sri","Wed");
+        put("Čet","Thu");
+        put("Pet","Fri");
+        put("Sub","Sat");
+        put("Ned","Sun");
+    }};
+
     static boolean isWorkingNow(List<DayWorkingHours> workingHours) throws ParseException
     {
         Calendar calendar = Calendar.getInstance();
@@ -72,7 +83,7 @@ public class BusinessEntitiesUtilities
 
         for(DayWorkingHours dwh : workingHours)
         {
-            if(dwh != null && dwh.getDayShortName().equals(currentDayShort))
+            if(dwh != null && days_hr_to_eng.get(dwh.getDayShortName()).equals(currentDayShort))
             {
                 Date startTime = new SimpleDateFormat("HH:mm:ss").parse(dwh.getStartTime());
                 Date endTime = new SimpleDateFormat("HH:mm:ss").parse(dwh.getEndTime());
