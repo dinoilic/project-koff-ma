@@ -1,5 +1,6 @@
 package com.dinotom.project_koff_ma;
 
+import com.dinotom.project_koff_ma.pojo.TokenDetail;
 import com.dinotom.project_koff_ma.pojo.TokenValidation;
 import com.dinotom.project_koff_ma.pojo.UserPk;
 import com.dinotom.project_koff_ma.pojo.business_entities.BusinessEntityPage;
@@ -100,4 +101,7 @@ public interface APIInterface
 
     @GET("api/v1/entities/search/")
     Call<SearchPage> getSearchPage(@Query("description") String description);
+
+    @GET("api/v1/token/{token}/")
+    Call<TokenDetail> getTokenDetail(@Path("token") String token);
 }

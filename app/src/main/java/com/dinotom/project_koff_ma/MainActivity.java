@@ -16,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,6 +26,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dinotom.project_koff_ma.business_entities.BusinessEntitiesActivity;
@@ -67,6 +69,12 @@ public class MainActivity extends AppCompatActivity
     SearchView searchView;
 
     boolean ottoRegistered = false;
+
+    protected void setName() {
+        final NavigationView navigationView = findViewById(R.id.nav_view);
+        TextView tvName = navigationView.getHeaderView(0).findViewById(R.id.nav_header_name);
+        tvName.setText(UserUtilities.getCurrentUserName());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -124,6 +132,7 @@ public class MainActivity extends AppCompatActivity
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
     }
 
     @Override
@@ -132,10 +141,14 @@ public class MainActivity extends AppCompatActivity
         super.onStart();
 
         String currentUserToken = UserUtilities.getCurrentUserToken(); // get current User Auth Token from shared preferences
+
+        UserUtilities.saveUserName(currentUserToken);
+
         if(currentUserToken == null || currentUserToken.isEmpty())
             initiateLoginActivity();
         else
             UserUtilities.checkTokenValidity(currentUserToken); // checks validity of the current token; if invalid, fetches new token
+
     }
 
     @Override
@@ -178,6 +191,10 @@ public class MainActivity extends AppCompatActivity
 
         if (event.equals(getBaseContext().getResources().getString(R.string.main_activity_login_event)))
             initiateLoginActivity();
+
+        if (event.equals(KoffGlobal.getAppContext().getResources().getString(R.string.user_name_change_event))) {
+            setName();
+        }
     }
 
     @Override
