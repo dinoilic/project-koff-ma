@@ -119,7 +119,7 @@ public class LoginActivity extends AppCompatActivity
         {
             String loginFailureInfo = getBaseContext().getResources().getString(R.string.login_failure_info);
             Toast.makeText(getApplicationContext(),loginFailureInfo , Toast.LENGTH_SHORT).show();
-            progressBar.setVisibility(View.GONE);
+            progressBar.setVisibility(View.INVISIBLE);
         }
     }
 

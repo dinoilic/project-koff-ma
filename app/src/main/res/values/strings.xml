@@ -85,6 +85,7 @@
     <string name="registration_button">Registriraj se</string>
     <string name="registration_clear_button">Reset</string>
 
+    <string name="registration_error">Neuspjela registracija! Promijenite korisničko ime i/ili e-mail.</string>
     <string name="registration_username_error">Nedopušteno korisničko ime, unesite ponovo</string>
     <string name="registration_first_name_error">Nedopušteno ime, unesite ponovo</string>
     <string name="registration_last_name_error">Nedopušteno prezime, unesite ponovo</string>

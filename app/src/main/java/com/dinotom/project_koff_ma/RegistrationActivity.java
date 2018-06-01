@@ -2,18 +2,23 @@ package com.dinotom.project_koff_ma;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.Patterns;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.dinotom.project_koff_ma.business_entities.BusinessEntitiesUtilities;
 import com.dinotom.project_koff_ma.pojo.RegistrationResult;
 import com.dinotom.project_koff_ma.pojo.TokenDetail;
 
@@ -23,12 +28,16 @@ import retrofit2.Response;
 
 public class RegistrationActivity extends AppCompatActivity
 {
+    private static final String TAG = RegistrationActivity.class.getSimpleName();
+
     private AwesomeValidation awesomeValidation;
+    private TextInputLayout layoutPassword;
     private EditText editUsername, editPassword, editRepeatPassword, editFirstName, editLastName, editEmail;
     private ProgressBar progressBar;
 
     private void initializeForm()
     {
+        layoutPassword = findViewById(R.id.password_input_layout);
         editUsername = findViewById(R.id.username_input);
         editPassword = findViewById(R.id.password_input);
         editRepeatPassword = findViewById(R.id.password_repeat_input);
@@ -43,22 +52,22 @@ public class RegistrationActivity extends AppCompatActivity
                                         R.id.username_input,
                                         "^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$",
                                         R.string.registration_username_error);
-        awesomeValidation.addValidation(this,
+        /*awesomeValidation.addValidation(this,
                 R.id.password_input,
-                "^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$",
-                R.string.registration_password_error);
+                "^\\s*$",
+                R.string.registration_password_error);*/
         awesomeValidation.addValidation(this,
                 R.id.password_repeat_input,
                 R.id.password_input,
                 R.string.registration_passwords_not_equal_error);
-        awesomeValidation.addValidation(this,
+        /*awesomeValidation.addValidation(this,
                 R.id.first_name_input,
-                "^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$",
+                "\\s*",
                 R.string.registration_first_name_error);
         awesomeValidation.addValidation(this,
                 R.id.last_name_input,
-                "^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$",
-                R.string.registration_last_name_error);
+                "^\\s*$",
+                R.string.registration_last_name_error);*/
         awesomeValidation.addValidation(this,
                 R.id.email_input,
                 Patterns.EMAIL_ADDRESS,
@@ -95,6 +104,23 @@ public class RegistrationActivity extends AppCompatActivity
             }
         });
 
+        EditText lastEditText = findViewById(R.id.email_input);
+        lastEditText.setOnEditorActionListener(new TextView.OnEditorActionListener()
+        {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
+            {
+                Log.d(TAG, String.format("actionId: %s", actionId));
+
+                if (actionId == 6)
+                {
+                    registerOnClick();
+                    return true;
+                }
+                return false;
+            }
+        });
+
         progressBar = findViewById(R.id.registration_progress_bar);
 
         Toolbar registrationToolbar = (Toolbar) findViewById(R.id.registration_appbar);
@@ -108,7 +134,25 @@ public class RegistrationActivity extends AppCompatActivity
 
     private void registerOnClick()
     {
-        if (!awesomeValidation.validate()) return;
+        boolean shouldReturn = false;
+
+        if(editPassword.getText().toString().isEmpty())
+        {
+            editPassword.setError(getResources().getString(R.string.registration_password_error));
+            shouldReturn = true;
+        }
+        if(editFirstName.getText().toString().isEmpty())
+        {
+            editFirstName.setError(getResources().getString(R.string.registration_first_name_error));
+            shouldReturn = true;
+        }
+        if(editLastName.getText().toString().isEmpty())
+        {
+            editLastName.setError(getResources().getString(R.string.registration_last_name_error));
+            shouldReturn = true;
+        }
+
+        if (!awesomeValidation.validate() || shouldReturn) return;
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -127,11 +171,18 @@ public class RegistrationActivity extends AppCompatActivity
             public void onResponse(Call<RegistrationResult> call, Response<RegistrationResult> response)
             {
                 RegistrationResult registrationResult = response.body();
-                UserUtilities.setNewUserToken(registrationResult.getAuthToken());
 
-                Intent returnIntent = new Intent();
-                setResult(Activity.RESULT_OK, returnIntent);
-                finish();
+                if(registrationResult != null) {
+                    UserUtilities.setNewUserToken(registrationResult.getAuthToken());
+                    Intent returnIntent = new Intent();
+                    setResult(Activity.RESULT_OK, returnIntent);
+                    finish();
+                }
+                else
+                {
+                    String error = getResources().getString(R.string.registration_error);
+                    Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
