@@ -15,10 +15,11 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
 
+
     <EditText
         android:id="@+id/commentInput"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:ems="10"
         android:gravity="top"
@@ -27,17 +28,8 @@
         android:inputType="textMultiLine"
         android:maxLength="500"
         android:padding="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/commentApplyButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/comment_activity_appbar" />
 
-    <Button
-        android:id="@+id/commentApplyButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/comment_apply"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
 </android.support.constraint.ConstraintLayout>

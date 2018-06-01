@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity
 
     boolean ottoRegistered = false;
 
-    protected void setName() {
+    private void setName() {
         final NavigationView navigationView = findViewById(R.id.nav_view);
         TextView tvName = navigationView.getHeaderView(0).findViewById(R.id.nav_header_name);
         tvName.setText(UserUtilities.getCurrentUserName());
