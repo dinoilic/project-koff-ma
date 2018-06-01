@@ -154,7 +154,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if (requestCode == LOGIN_REQUEST && resultCode == RESULT_OK) recreate();
+        if (requestCode == LOGIN_REQUEST && resultCode == RESULT_OK)
+        {
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+        }
     }
 
     private void initiateLoginActivity()
