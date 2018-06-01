@@ -1,5 +1,6 @@
 package com.dinotom.project_koff_ma;
 
+import com.dinotom.project_koff_ma.pojo.RegistrationResult;
 import com.dinotom.project_koff_ma.pojo.TokenDetail;
 import com.dinotom.project_koff_ma.pojo.TokenValidation;
 import com.dinotom.project_koff_ma.pojo.UserPk;
@@ -32,8 +33,19 @@ public interface APIInterface
     @POST("api-token-auth/")
     Call<UserToken> getUserToken(@Field("username") String username, @Field("password") String password);
 
+    @GET("api/v1/token/{token}/")
+    Call<TokenDetail> getTokenDetail(@Path("token") String token);
+
     @GET("api/v1/get-user-pk/")
     Call<UserPk> getUserPk();
+
+    @FormUrlEncoded
+    @POST("api/v1/users/")
+    Call<RegistrationResult> registerUser(@Field("username") String username,
+                                          @Field("password") String password,
+                                          @Field("email") String email,
+                                          @Field("first_name") String first_name,
+                                          @Field("last_name") String last_name);
 
     @GET("api/v1/categories/")
     Call<Category> getMainCategories();
@@ -101,7 +113,4 @@ public interface APIInterface
 
     @GET("api/v1/entities/search/")
     Call<SearchPage> getSearchPage(@Query("description") String description);
-
-    @GET("api/v1/token/{token}/")
-    Call<TokenDetail> getTokenDetail(@Path("token") String token);
 }

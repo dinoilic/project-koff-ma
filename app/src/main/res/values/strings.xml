@@ -68,10 +68,29 @@
     <string name="login_empty_warning">Niste unijeli sve podatke!</string>
     <string name="login_failure_info">Neuspješna prijava! Provjerite svoje podatke.</string>
     <string name="login_password_hint">Unesite lozinku</string>
-    <string name="login_appbar_title">Prijavi se</string>
+    <string name="login_appbar_title">Prijava</string>
     <string name="login_button">Prijavi se</string>
     <string name="logout_button">Odjavi se</string>
 
     <string name="login_successful_event">LOGIN_SUCCESSFUL_EVENT</string>
     <string name="login_failure_event">LOGIN_FAILURE_EVENT</string>
+
+    <string name="registration_appbar_title">Registracija</string>
+    <string name="registration_username_hint">Korisničko ime</string>
+    <string name="registration_password_hint">Lozinka</string>
+    <string name="registration_password_repeat_hint">Ponovi lozinku</string>
+    <string name="registration_first_name_hint">Ime</string>
+    <string name="registration_last_name_hint">Prezime</string>
+    <string name="registration_email_hint">E-Mail</string>
+    <string name="registration_button">Registriraj se</string>
+    <string name="registration_clear_button">Reset</string>
+
+    <string name="registration_username_error">Nedopušteno korisničko ime, unesite ponovo</string>
+    <string name="registration_first_name_error">Nedopušteno ime, unesite ponovo</string>
+    <string name="registration_last_name_error">Nedopušteno prezime, unesite ponovo</string>
+    <string name="registration_email_error">Neispravno unesen e-mail, unesite ponovo</string>
+    <string name="registration_password_error">Neispravno unesena lozinka, unesite ponovo</string>
+    <string name="registration_passwords_not_equal_error">Lozinke nisu jednake, unesite ponovo</string>
+
+
 </resources>

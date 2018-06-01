@@ -42,13 +42,16 @@
         <activity android:name=".business_entities.BusinessEntityInfoActivity" />
         <activity
             android:name=".business_entities.CommentActivity"
-            android:windowSoftInputMode="stateVisible"></activity>
+            android:windowSoftInputMode="stateVisible" />
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login"></activity>
+            android:label="@string/title_activity_login" />
+
         <service
             android:name=".business_entities.FetchAddressIntentService"
-            android:exported="false"/>
+            android:exported="false" />
+
+        <activity android:name=".RegistrationActivity"></activity>
     </application>
 
 </manifest>

@@ -134,7 +134,8 @@ public class UserUtilities
         });
     }
 
-    static void saveUserName(String token) {
+    static void saveUserName(String token)
+    {
         APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
 
         Call<TokenDetail> tokenDetailCall = apiInterface.getTokenDetail(token);
@@ -145,7 +146,8 @@ public class UserUtilities
             {
                 TokenDetail tokenDetails = response.body(); // Category pojo is fetched
 
-                setUserDetails(tokenDetails.getUser().getFullName());
+                if(tokenDetails != null)
+                    setUserDetails(tokenDetails.getUser().getFullName());
 
                 KoffGlobal.bus.post(KoffGlobal.getAppContext().getResources().getString(R.string.user_name_change_event));
             }
@@ -156,6 +158,5 @@ public class UserUtilities
                 call.cancel();
             }
         });
-
     }
 }

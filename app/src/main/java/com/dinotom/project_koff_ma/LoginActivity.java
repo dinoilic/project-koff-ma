@@ -23,6 +23,7 @@ public class LoginActivity extends AppCompatActivity
     private static final String TAG = LoginActivity.class.getSimpleName();
     private ProgressBar progressBar;
 
+    static final int REGISTRATION_REQUEST = 1005;
     boolean ottoRegistered = false;
 
     @Override
@@ -40,6 +41,15 @@ public class LoginActivity extends AppCompatActivity
             public void onClick(View v)
             {
                loginOnClick();
+            }
+        });
+
+        Button registerButton = findViewById(R.id.register_button);
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                registerOnClick();
             }
         });
 
@@ -82,6 +92,18 @@ public class LoginActivity extends AppCompatActivity
             UserUtilities.fetchNewToken(username, password);
             progressBar.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void registerOnClick()
+    {
+        Intent intent = new Intent(getBaseContext(), RegistrationActivity.class);
+        startActivityForResult(intent, REGISTRATION_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (requestCode == REGISTRATION_REQUEST && resultCode == RESULT_OK) finish();
     }
 
     @Subscribe
