@@ -1,5 +1,7 @@
 # project-koff-ma
 
+Backend app available [here](https://github.com/dinoilic/project-koff-web).
+
 ## Setup
 Add "individual_dev_settings.xml" to app/src/main/res/values/ with the following content:
 
