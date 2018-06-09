@@ -34,7 +34,7 @@
             android:resource="@array/preloaded_fonts" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="***REMOVED***" />
+            android:value="@string/google_api_key" />
 
         <activity android:name=".SubcategoryActivity" />
         <activity android:name=".business_entities.FilterSettingsActivity" />
